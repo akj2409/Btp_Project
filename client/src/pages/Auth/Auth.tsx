@@ -1,15 +1,28 @@
+
 import React, { useState } from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { TextField, InputAdornment, IconButton, MenuItem } from "@mui/material";
 import Navbar from "../../common/Navbar";
 
+const initialState = {firstname: '', lastname: '', role: '', email: '', password: '', confirmpassword:''};
+
 const Auth = () => {
   const [isSignup, setisSignup] = useState(false);
 
   const [showpassword, setshowpassword] = useState(false);
 
-  const [role, setrole] = useState("");
+  // const [role, setrole] = useState("");
+  const [formData, setformData] = useState(initialState);
+  
+  const handleChange = (e : any) =>{
+    setformData({...formData, [e.target.name]: e.target.value})
+  }
+
+  const handleSubmit = (e:any) => {
+    e.preventDefault();
+    console.log(formData);
+  }
 
   const handleshowpassword = () =>
     setshowpassword((prevshowpassword) => !prevshowpassword);
@@ -30,9 +43,11 @@ const Auth = () => {
   };
 
   const rolechange = (e: {
-    target: { value: React.SetStateAction<string> };
+    target: {
+      [x: string]: any; value: React.SetStateAction<string> 
+};
   }) => {
-    setrole(e.target.value);
+    setformData({...formData, [e.target.name]: e.target.value})
   };
   return (
     <>
@@ -42,27 +57,29 @@ const Auth = () => {
         <img className="w-[62px] h-[62px]" src="/images/lock.png" alt="lock" />
         <h3>{isSignup ? "Sign Up" : "Sign In"}</h3>
       </div>
-      <form className="flex flex-col gap-5 justify-evenly z-1">
+      <form className="flex flex-col gap-5 justify-evenly z-1" onSubmit={handleSubmit}>
         <div className="flex flex-row justify-between z-0">
           {isSignup && (
             <>
               <div className="mr-1">
                 <TextField
-                  name="first name"
+                  name="firstname"
                   variant="outlined"
                   label="First name"
                   type="text"
                   required
                   fullWidth
+                  onChange={handleChange}
                 />
               </div>
               <div className="ml-1">
                 <TextField
-                  name="last name"
+                  name="lastname"
                   variant="outlined"
                   label="Last name"
                   type="text"
                   fullWidth
+                  onChange={handleChange}
                 />
               </div>
             </>
@@ -72,15 +89,17 @@ const Auth = () => {
           <>
             <TextField
               variant="outlined"
+              name="role"
               label="Select your role"
               required
               select
-              value={role}
-              onChange={rolechange}
+              value={formData.role}
+              onChange={handleChange}
               fullWidth
+
             >
-              <MenuItem value="s">Student</MenuItem>
-              <MenuItem value="o">Client</MenuItem>
+              <MenuItem value="1">Student</MenuItem>
+              <MenuItem value="0">Client</MenuItem>
             </TextField>
           </>
         )}
@@ -92,6 +111,7 @@ const Auth = () => {
             type="email"
             required
             fullWidth
+            onChange={handleChange}
           />
         </div>
         <div>
@@ -102,6 +122,7 @@ const Auth = () => {
             type={showpassword ? "text" : "password"}
             required
             fullWidth
+            onChange={handleChange}
             InputProps={{
               endAdornment: <Endadornment showpassword={showpassword} />,
             }}
@@ -117,6 +138,7 @@ const Auth = () => {
                 type="password"
                 required
                 fullWidth
+                onChange={handleChange}
               />
             </div>
           </>

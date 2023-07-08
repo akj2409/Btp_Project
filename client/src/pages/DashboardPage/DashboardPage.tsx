@@ -1,6 +1,6 @@
+
 import React from "react";
 import {
-  AiFillDollarCircle,
   AiFillDropboxCircle,
   AiFillPlusCircle,
 } from "react-icons/ai";
@@ -16,26 +16,26 @@ const jobcards = [
   {
     img: "/images/likedin.png",
     title: "UI Designer",
-    skillset: "CSS, Javascript, React",
-    amount: "$100",
+    skillset: ['CSS','Javascript','React'],
+    amount: "100",
   },
   {
     img: "/images/git.png",
     title: "UI Designer",
-    skillset: "CSS, Javascript, React",
-    amount: "$200",
+    skillset: ['CSS','Javascript','React'],
+    amount: "200",
   },
   {
     img: "/images/likedin.png",
     title: "UI Designer",
-    skillset: "CSS, Javascript, React",
-    amount: "$100",
+    skillset: ['CSS','Javascript','React'],
+    amount: "100",
   },
   {
     img: "/images/git.png",
     title: "UI Designer",
-    skillset: "CSS, Javascript, React",
-    amount: "$200",
+    skillset: ['CSS','Javascript','React'],
+    amount: "200",
   },
 ];
 const DashboardPage = () => {

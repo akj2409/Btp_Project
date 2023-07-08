@@ -1,8 +1,9 @@
+
 import React from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../../../hooks/useFetch";
-import Jobdetail from "./Jobdetail";
+import { FaRupeeSign } from "react-icons/fa";
 const Jobcard = ({ title, skillset, amount, description }: any) => {
   const navigate = useNavigate();
 
@@ -12,19 +13,20 @@ const Jobcard = ({ title, skillset, amount, description }: any) => {
   });
 
   return (
-    <div
-      onClick={() => navigate(`/jobdetail/${title}`)}
-      // onClick={handleClick}
-      className=" flex w-1/2 justify-start relative z-0 flex-row gap-4 m-4 p-4 rounded-[10px] bg-foreground hover:shadow-[0px_7px_30px_0px_rgba(90,114,123,0.11)] l:flex-col l:w-2/5 xm:w-4/5 "
-    >
+    <div className=" flex w-1/2 justify-between relative z-0 flex-row gap-4 m-4 p-4 rounded-[10px] bg-foreground hover:shadow-[0px_7px_30px_0px_rgba(90,114,123,0.11)] l:flex-col l:w-2/5 xm:w-4/5 ">
       <div className="flex flex-col justify-center items-start gap-2">
-        <h1 className="font-manrope text-blact font-semibold">{title}</h1>
-        <div className="flex flex-row justify-center items-start gap-4">
-          <p className="font-manrope text-grey text-xs">{skillset}</p>
-          <p className="font-manrope text-grey text-xs">{amount}</p>
+        <h1 className="font-manrope text-black font-semibold">{title}</h1>
+        <p className=" flex items-center font-manrope text-grey text-xs">Budget:<FaRupeeSign size={10}/>{amount}</p>
+        <div className="flex flex-row justify-center items-start gap-2">
+          {skillset.map((skill: any,i: any)=>(
+            <div key={i} className="bg-[#cec1f3] flex justify-center items-center rounded-xl px-2.5 py-1">
+             <p className="font-manrope text-black text-xs">{skill}</p>
+            </div>
+          ))}
         </div>
       </div>
-      <div className="flex justify-start items-center ml-[50%] l:ml-0">
+      <div className="flex justify-start gap-2 items-center ">
+        <button onClick={() => navigate(`/jobdetail`)} className="text-indigo-500  p-2 font-medium rounded text-sm  cursor-pointer bg-foreground font-manrope outline-none border-none">View Detail</button>
         <button
           onClick={deleteFunc}
           disabled={deleteLoading}
@@ -38,3 +40,5 @@ const Jobcard = ({ title, skillset, amount, description }: any) => {
 };
 
 export default Jobcard;
+
+
