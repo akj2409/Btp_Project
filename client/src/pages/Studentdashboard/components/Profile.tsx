@@ -29,6 +29,8 @@ const projectcards = [
   },
 ];
 
+const initialState = {firstname: '', lastname: '', role: '', email: '', password: '', confirmpassword:''};
+
 const Profile = () => {
   const inputRef = useRef() as React.MutableRefObject<HTMLImageElement>;
   const [image, setimage] = useState("");
@@ -41,6 +43,48 @@ const Profile = () => {
     const file = e.target.files[0];
     setimage(file);
   };
+
+  const [firstname,setfirstname] = useState("");
+  const [email,setemail] = useState("");
+  const [mobile,setmobile] = useState("");
+  const [address,setaddress] = useState("");
+  const [bio,setbio] = useState("");
+  const [gitlink,setgitlink] = useState("");
+  const [twitterlink,settwitterlink] = useState("");
+  const [linkedinlink,setlinkedinlink] = useState("");
+
+  const handlename =(e:any)=>{
+    setfirstname(e.target.value);
+  }
+
+  const handleemail =(e:any)=>{
+    setemail(e.target.value);
+  }
+
+  const handlemobile =(e:any)=>{
+    setmobile(e.target.value);
+  }
+
+  const handleaddress =(e:any)=>{
+    setaddress(e.target.value);
+  }
+
+  const handlebio =(e:any)=>{
+    setbio(e.target.value);
+  }
+
+  const handlegitlink =(e:any)=>{
+    setgitlink(e.target.value);
+  }
+
+  const handletwitterlink =(e:any)=>{
+    settwitterlink(e.target.value);
+  }
+
+  const handlelinkedinlink =(e:any)=>{
+    setlinkedinlink(e.target.value);
+  }
+
 
   return (
     <>
@@ -69,36 +113,48 @@ const Profile = () => {
                   )}
                 </div>
                 <h3 className="font-manrope text-xl my-2.5 mx-0 font-bold">
-                  Monis Khan
+                  {firstname}
                 </h3>
-                <p className="text-sm text-grey">Full Stack Developer</p>
-                <p className="text-sm text-grey">Gwalior, India</p>
+                <input
+                    className="w-full p-[.3rem] text-base text-center  outline-none bg-background rounded-md  "
+                    type="text" placeholder="Enter Bio" onChange={handlebio} value={bio}
+                  />
+                <p className="text-sm text-black">{address}</p>
               </div>
 
               <div className="flex flex-col justify-center items-center m-4 py-0 px-5 w-full">
                 <div className="flex flex-row justify-between items-center my-2 mx-0 w-full">
                   <div className="flex flex-row justify-center items-center">
-                    {/* <img src={git} alt="" /> */}
+    
                     <BsGithub />
                     <h5 className="ml-1 font-semibold">Github</h5>
                   </div>
-                  <p>http://github</p>
+                  <input
+                    className="p-[.3rem] text-base text-center border rounded-md outline-none"
+                    type="text" placeholder="Enter your github link" onChange={handlegitlink} value={gitlink}
+                  />
                 </div>
                 <div className="flex flex-row justify-between items-center my-2 mx-0 w-full">
                   <div className="flex flex-row justify-center items-center">
-                    {/* <img src={twitter} alt="" /> */}
+                
                     <BsTwitter />
                     <h5 className="ml-1 font-semibold">Twitter</h5>
                   </div>
-                  <p>http://twitter</p>
+                  <input
+                    className="p-[.3rem] text-base text-center border rounded-md outline-none"
+                    type="text" placeholder="Enter your twitter link" onChange={handletwitterlink} value={twitterlink}
+                  />
                 </div>
                 <div className="flex flex-row justify-between items-center my-2 mx-0 w-full">
                   <div className="flex flex-row justify-center items-center">
-                    {/* <img src={likedin} alt="" /> */}
+                  
                     <BsLinkedin />
                     <h5 className="ml-1 font-semibold">Linkedin</h5>
                   </div>
-                  <p>http://linkedin</p>
+                  <input
+                    className="p-[.3rem] text-base border text-center rounded-md outline-none"
+                    type="text" placeholder="Enter your linkedin link" onChange={handlelinkedinlink} value={linkedinlink}
+                  />
                 </div>
               </div>
             </div>
@@ -116,28 +172,28 @@ const Profile = () => {
                   </h5>
                   <input
                     className="w-full p-[.3rem] text-base  outline-none border-b-2 border-black"
-                    type="text"
+                    type="text" onChange={handlename} value={firstname}
                   />
                 </div>
                 <div className="flex flex-col justify-start items-start my-2 mx-0 w-full">
                   <h5 className="font-manrope text-base font-bold">Email</h5>
                   <input
                     className="w-full p-[.3rem] text-base  outline-none border-b-2 border-black"
-                    type="text"
+                    type="text" onChange={handleemail} value={email}
                   />
                 </div>
                 <div className="flex flex-col justify-start items-start my-2 mx-0 w-full">
                   <h5 className="font-manrope text-base font-bold">Mobile</h5>
                   <input
                     className="w-full p-[.3rem] text-base  outline-none border-b-2 border-black"
-                    type="text"
+                    type="text" onChange={handlemobile} value={mobile}
                   />
                 </div>
                 <div className="flex flex-col justify-start items-start my-2 mx-0 w-full">
                   <h5 className="font-manrope text-base font-bold">Address</h5>
                   <input
                     className="w-full p-[.3rem] text-base  outline-none border-b-2 border-black"
-                    type="text"
+                    type="text" onChange={handleaddress} value={address}
                   />
                 </div>
                 <div className="hidden">
@@ -148,7 +204,7 @@ const Profile = () => {
                     onChange={handleimagechange}
                   />
                 </div>
-                <button className="btn-3" type="button">
+                <button className="btn-3" type="submit">
                   Save Changes
                 </button>
               </form>
