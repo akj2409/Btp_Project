@@ -78,3 +78,6 @@ app.listen(PORT , ()=>{
 
 // Details Save
 // http://localhost:5000/saveDetails/save
+
+// getDetails
+// http://localhost:5000/saveDetails/getDetails
