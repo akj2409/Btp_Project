@@ -17,7 +17,7 @@ router.post('/login' ,[
 ], Login)
 
 router.get('/details', fetchuser , getDetail);
-router.post('/details_by_id' , getDetail_by_userid);
+router.get('/details_by_id/:id' , getDetail_by_userid);
 router.get('/applied_jobs' ,fetchuser , get_user_applied_job );
 
 export default router ;

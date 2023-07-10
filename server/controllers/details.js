@@ -34,3 +34,15 @@ export const save_Details = async(req,res)=>{
         console.log(error);
     }
 }
+
+
+export const getDetails = async(req,res)=>{
+    try {
+        const {_id} = req.user_name ;
+        const details = await UserDetail.find({user_id:_id});
+        return res.status(200).json({sucess:true,message:"Details Found" , details});
+    } catch (error) {
+        res.status(500).json({sucess:false , message:"Server Error" , error});
+        console.log(error);
+    }
+}
