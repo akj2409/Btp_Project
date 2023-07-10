@@ -17,6 +17,8 @@ import { Theme, useTheme } from "@mui/material";
 import { FaRupeeSign } from "react-icons/fa";
 import useFetch from "../../../hooks/useFetch";
 
+const postjoburl = 'http://localhost:5000/jobs/create_job';
+
 const steps = ["Step 1", "Step 2", "Step 3"];
 
 const skills = [
@@ -85,12 +87,28 @@ const Stepperform = () => {
     setamount(e.target.value);
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async(e:any) => {
     e.preventDefault();
-    useFetch("/asdasd", {
-      method: "POST",
-      body: { title: title, amount: amount, description: description, skillset: skillset },
-    });
+    const token = localStorage.getItem('token');
+    const object = {
+      "title":values.title,
+      "description":values.description,
+      "budget":values.amount,
+      "skills":values.skillset
+    }
+    await fetch(postjoburl,{
+      method:'POST',
+      headers:{
+        "Content-Type":"application/json",
+        "token":`${token}`
+      },
+      body: JSON.stringify(object)
+    }).then(async(res)=>{
+      const data = await res.json();
+      console.log(data);
+    }).catch(err=>{
+      console.log(err);
+    })
   };
 
   const handletitle = (e: any) => {
