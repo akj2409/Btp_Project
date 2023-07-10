@@ -20,6 +20,12 @@ const jobcards = [
     title: "UI Designer",
     skillset: ['CSS','Javascript','React'],
     amount: "100",
+  },
+  {
+    img: "/images/likedin.png",
+    title: "UI Designer",
+    skillset: ['CSS','Javascript','React'],
+    amount: "100",
   } 
 ];
 const DashboardPage = () => {
