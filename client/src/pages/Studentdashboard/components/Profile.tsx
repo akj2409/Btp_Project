@@ -1,9 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {BsGithub, BsLinkedin } from "react-icons/bs";
 import Dashbar from "./Dashbar";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import Projectcard from "./Projectcard";
+
+const fetchurl = 'http://localhost:5000/users/details';
+const saveurl = 'http://localhost:5000/saveDetails/save';
+const fetchDetailsurl = 'http://localhost:5000/saveDetails/getDetails';
 
 const projectcards = [
   {
@@ -34,6 +38,7 @@ const projectcards = [
 const Profile = () => {
   const inputRef = useRef() as React.MutableRefObject<HTMLImageElement>;
   const [image, setimage] = useState("");
+  
   const navigate = useNavigate();
   const handleimageclick = () => {
     inputRef.current.click();
@@ -51,15 +56,7 @@ const Profile = () => {
   const [bio,setbio] = useState("");
   const [gitlink,setgitlink] = useState("");
   const [linkedinlink,setlinkedinlink] = useState("");
-
-  // const handlename =(e:any)=>{
-  //   setname(e.target.value);
-  // }
-
-  // const handleemail =(e:any)=>{
-  //   setemail(e.target.value);
-  // }
-
+  
   const handlemobile =(e:any)=>{
     setmobile(e.target.value);
   }
@@ -80,9 +77,30 @@ const Profile = () => {
     setlinkedinlink(e.target.value);
   }
 
-  const handlesubmit =(e:any)=>{
+  const handlesubmit =async (e:any)=>{
     e.preventDefault();
     console.log({name : name, email: email, mobile: mobile, address: address, bio: bio, gitlink: gitlink, linkedinlink: linkedinlink })
+    const object = {
+      "mobile":mobile,
+      "address":address,
+      "github":gitlink,
+      "linkedin":linkedinlink,
+      "bio":bio
+    }
+    const token = localStorage.getItem('token');
+    await fetch(saveurl , {
+      method:'POST',
+      headers:{
+        "Content-Type":"application/json",
+        "token":`${token}`
+      },
+      body:JSON.stringify(object)
+    }).then(async(res)=>{
+      const data = await res.json();
+      console.log(data);
+    }).catch(err=>{
+      console.log(err);
+    })
 
   }
 
@@ -90,6 +108,51 @@ const Profile = () => {
     alert('Changes Saved');
   }
 
+  const fetchuser = async()=>{
+    const token = localStorage.getItem('token');
+    await fetch(fetchurl , {
+      method:'GET',
+      headers:{
+        "Content-Type":"application/json",
+        "token":`${token}`
+      }
+    }).then(async(res)=>{
+      const data = await res.json();
+      console.log(data);
+      setname(data.user.first_name+" " + data.user.last_name);
+      setemail(data.user.email);
+    }).catch(err=>{
+      console.log(err);
+    })
+  }
+
+  const fetchDetails = async()=>{
+    const token = localStorage.getItem('token');
+    await fetch(fetchDetailsurl , {
+      method:'GET',
+      headers:{
+        "Content-Type":"application/json",
+        "token":`${token}`
+      }
+    }).then(async(res)=>{
+      const data = await res.json();
+      setmobile(data.details[0].mobile_no);
+      setaddress(data.details[0].address);
+      setbio(data.details[0].bio);
+      setgitlink(data.details[0].githubLink);
+      setlinkedinlink(data.details[0].linkedinlink);
+    }).catch(err=>{
+      console.log(err);
+    })
+  }
+
+  useEffect(() => {
+    fetchuser()
+    fetchDetails()
+  },[]);
+
+ 
+   
 
   return (
     <>

@@ -71,7 +71,7 @@ export const getDetail = async(req,res)=>{
 
 export const getDetail_by_userid = async(req,res)=>{
     try {
-        const {user_id} = req.body ;
+        const user_id = req.params['id'] ;
         const user = await User.findById({_id:user_id});
 
         res.status(200).json({sucess:true , message:"User Found" , user});

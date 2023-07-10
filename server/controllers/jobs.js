@@ -46,3 +46,16 @@ export const All_jobs_of_client = async(req,res) =>{
         console.log(error);
     }
 }
+
+export const job_by_id = async(req,res)=>{
+    try {
+        const id = req.params['id'] ;
+        const job = await Jobs.findOne({_id:id});
+        if(!job) return res.status(404).json({sucess:false , message:"Job Not Found"});
+        console.log(job);
+        res.status(200).json({sucess:true , message:"Job Found", job});
+    } catch (error) {
+        res.status(500).json({sucess:false , message:"Server Error" , error:error});
+        console.log(error);
+    }
+}
