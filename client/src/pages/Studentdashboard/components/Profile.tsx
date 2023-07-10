@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { BsTwitter, BsGithub, BsLinkedin } from "react-icons/bs";
+import {BsGithub, BsLinkedin } from "react-icons/bs";
 import Dashbar from "./Dashbar";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +29,7 @@ const projectcards = [
   },
 ];
 
-const initialState = {firstname: '', lastname: '', role: '', email: '', password: '', confirmpassword:''};
+
 
 const Profile = () => {
   const inputRef = useRef() as React.MutableRefObject<HTMLImageElement>;
@@ -44,22 +44,21 @@ const Profile = () => {
     setimage(file);
   };
 
-  const [firstname,setfirstname] = useState("");
-  const [email,setemail] = useState("");
+  const [name,setname] = useState("aditya");
+  const [email,setemail] = useState("aditya@jhfguoid");
   const [mobile,setmobile] = useState("");
   const [address,setaddress] = useState("");
   const [bio,setbio] = useState("");
   const [gitlink,setgitlink] = useState("");
-  const [twitterlink,settwitterlink] = useState("");
   const [linkedinlink,setlinkedinlink] = useState("");
 
-  const handlename =(e:any)=>{
-    setfirstname(e.target.value);
-  }
+  // const handlename =(e:any)=>{
+  //   setname(e.target.value);
+  // }
 
-  const handleemail =(e:any)=>{
-    setemail(e.target.value);
-  }
+  // const handleemail =(e:any)=>{
+  //   setemail(e.target.value);
+  // }
 
   const handlemobile =(e:any)=>{
     setmobile(e.target.value);
@@ -77,12 +76,18 @@ const Profile = () => {
     setgitlink(e.target.value);
   }
 
-  const handletwitterlink =(e:any)=>{
-    settwitterlink(e.target.value);
-  }
-
   const handlelinkedinlink =(e:any)=>{
     setlinkedinlink(e.target.value);
+  }
+
+  const handlesubmit =(e:any)=>{
+    e.preventDefault();
+    console.log({name : name, email: email, mobile: mobile, address: address, bio: bio, gitlink: gitlink, linkedinlink: linkedinlink })
+
+  }
+
+  const alertfun =()=>{
+    alert('Changes Saved');
   }
 
 
@@ -113,7 +118,7 @@ const Profile = () => {
                   )}
                 </div>
                 <h3 className="font-manrope text-xl my-2.5 mx-0 font-bold">
-                  {firstname}
+                  {name}
                 </h3>
                 <input
                     className="w-full p-[.3rem] text-base text-center  outline-none bg-background rounded-md  "
@@ -122,8 +127,8 @@ const Profile = () => {
                 <p className="text-sm text-black">{address}</p>
               </div>
 
-              <div className="flex flex-col justify-center items-center m-4 py-0 px-5 w-full">
-                <div className="flex flex-row justify-between items-center my-2 mx-0 w-full">
+              <div className="flex flex-col justify-center items-center mx-4 mb-4 mt-12 py-0 px-5 w-full">
+                <div className="flex flex-row justify-between items-center my-2 mx-0 w-full vs:flex-col vs:gap-2">
                   <div className="flex flex-row justify-center items-center">
     
                     <BsGithub />
@@ -134,18 +139,8 @@ const Profile = () => {
                     type="text" placeholder="Enter your github link" onChange={handlegitlink} value={gitlink}
                   />
                 </div>
-                <div className="flex flex-row justify-between items-center my-2 mx-0 w-full">
-                  <div className="flex flex-row justify-center items-center">
-                
-                    <BsTwitter />
-                    <h5 className="ml-1 font-semibold">Twitter</h5>
-                  </div>
-                  <input
-                    className="p-[.3rem] text-base text-center border rounded-md outline-none"
-                    type="text" placeholder="Enter your twitter link" onChange={handletwitterlink} value={twitterlink}
-                  />
-                </div>
-                <div className="flex flex-row justify-between items-center my-2 mx-0 w-full">
+               
+                <div className="flex flex-row justify-between items-center my-2 mx-0 w-full vs:flex-col vs:gap-2">
                   <div className="flex flex-row justify-center items-center">
                   
                     <BsLinkedin />
@@ -165,21 +160,21 @@ const Profile = () => {
               Information
             </h1>
             <div className="flex flex-col justify-center items-center p-5 w-full bg-foreground rounded-xl mb-4 shadow-[0px_1px_20px_rgba(14,30,37,0.12)]">
-              <form className="flex-1 flex flex-col justify-start items-start w-3/4">
+              <form className="flex-1 flex flex-col justify-start items-start w-3/4" onSubmit={handlesubmit}>
                 <div className="flex flex-col justify-start items-start my-2 mx-0 w-full">
                   <h5 className="font-manrope text-base font-bold">
                     Full Name
                   </h5>
                   <input
                     className="w-full p-[.3rem] text-base  outline-none border-b-2 border-black"
-                    type="text" onChange={handlename} value={firstname}
+                    type="text"  value={name}
                   />
                 </div>
                 <div className="flex flex-col justify-start items-start my-2 mx-0 w-full">
                   <h5 className="font-manrope text-base font-bold">Email</h5>
                   <input
                     className="w-full p-[.3rem] text-base  outline-none border-b-2 border-black"
-                    type="text" onChange={handleemail} value={email}
+                    type="text" value={email}
                   />
                 </div>
                 <div className="flex flex-col justify-start items-start my-2 mx-0 w-full">
@@ -204,7 +199,7 @@ const Profile = () => {
                     onChange={handleimagechange}
                   />
                 </div>
-                <button className="btn-3" type="submit">
+                <button onClick={alertfun} className="btn-3" type="submit">
                   Save Changes
                 </button>
               </form>

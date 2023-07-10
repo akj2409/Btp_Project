@@ -1,4 +1,3 @@
-
 import React from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
@@ -40,5 +39,3 @@ const Jobcard = ({ title, skillset, amount, description }: any) => {
 };
 
 export default Jobcard;
-
-

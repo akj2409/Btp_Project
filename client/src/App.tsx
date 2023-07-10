@@ -1,5 +1,5 @@
-
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Navbar from "./common/Navbar";
 import HomePage from "./pages/HomePage/HomePage";
 import Profile from "./pages/Studentdashboard/components/Profile";
 import Auth from "./pages/Auth/Auth";

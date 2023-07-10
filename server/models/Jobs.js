@@ -16,6 +16,12 @@ const JobSchema= new mongoose.Schema(
             type:String,
             required:true,
           },
+          budget:{
+            type:String
+          },
+          skills:{
+            type:[],
+          },
           applied_user:{
             type:[],
             default: undefined
