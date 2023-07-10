@@ -1,6 +1,6 @@
-
 import React from "react";
 import {
+  AiFillDollarCircle,
   AiFillDropboxCircle,
   AiFillPlusCircle,
 } from "react-icons/ai";
@@ -12,36 +12,38 @@ import { useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import { Product } from "../../interfaces/Data";
 
+const AllJoburl = 'http://localhost:5000/jobs/jobs_of_client'
+
 const jobcards = [
   {
     img: "/images/likedin.png",
     title: "UI Designer",
     skillset: ['CSS','Javascript','React'],
     amount: "100",
-  },
-  {
-    img: "/images/git.png",
-    title: "UI Designer",
-    skillset: ['CSS','Javascript','React'],
-    amount: "200",
-  },
-  {
-    img: "/images/likedin.png",
-    title: "UI Designer",
-    skillset: ['CSS','Javascript','React'],
-    amount: "100",
-  },
-  {
-    img: "/images/git.png",
-    title: "UI Designer",
-    skillset: ['CSS','Javascript','React'],
-    amount: "200",
-  },
+  } 
 ];
 const DashboardPage = () => {
   const navigate = useNavigate();
     // const [jobcards, loading] = useFetch<Product[]>("/dummy/jobs.json");
     
+    const fetchDetails = async()=>{
+        const token = localStorage.getItem('token');
+        await fetch(AllJoburl, {
+          method:'GET',
+          headers:{
+            "Content-Type":"application/json",
+            "token":`${token}`
+          },
+        }).then(async(res)=>{
+          const data = await res.json();
+          console.log(data)
+          console.log(data.jobs.length)
+        }).catch(err=>{
+          console.log(err);
+        })
+    }
+
+    fetchDetails()
 
   return (
     <>

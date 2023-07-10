@@ -1,11 +1,16 @@
-
 import React, { useState } from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { TextField, InputAdornment, IconButton, MenuItem } from "@mui/material";
 import Navbar from "../../common/Navbar";
+import { firstSliceAngleProperty } from "@syncfusion/ej2/documenteditor";
 
 const initialState = {firstname: '', lastname: '', role: '', email: '', password: '', confirmpassword:''};
+const register_url = 'http://localhost:5000/users/newuser' ;
+const login_url = 'http://localhost:5000/users/login' ;
+
+
+
 
 const Auth = () => {
   const [isSignup, setisSignup] = useState(false);
@@ -19,9 +24,65 @@ const Auth = () => {
     setformData({...formData, [e.target.name]: e.target.value})
   }
 
-  const handleSubmit = (e:any) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
-    console.log(formData);
+    if(isSignup){
+      if(!(formData.password === formData.confirmpassword)){
+        console.log("Password and Confirm Password Should be same");
+        return ;
+      }
+      let role = formData.role === '1' ? "Student" : "Client" ;
+      const object = {
+        "first_name":formData.firstname,
+        "last_name":formData.lastname,
+        "email":formData.email,
+        "role":role,
+        "password":formData.password
+      }
+      await fetch(register_url , {
+        method:'POST',
+        headers:{
+          "Content-Type":"application/json",
+        },
+        body: JSON.stringify(object)
+      }).then(async(res)=>{
+        const data = await res.json();
+        console.log(data);
+        localStorage.setItem("token" , data.token)
+        if(role==="Student"){
+          window.location.replace(`http://localhost:5173/studentdashboard`);
+        }else{
+          window.location.replace('http://localhost:5173/dashboard')
+        }
+      }).catch(err=>{
+        console.log(err);
+      })
+    }else {
+      const object = {
+        "email":formData.email,
+        "password":formData.password
+      }
+      await fetch(login_url , {
+        method:'POST',
+        headers:{
+          "Content-Type":"application/json",
+        },
+        body: JSON.stringify(object)
+      }).then(async(res)=>{
+        const data = await res.json();
+        console.log(data);
+        localStorage.setItem("token" , data.token)
+        if(data.sucess){
+          if(data.user.role==="Student"){
+            window.location.replace(`http://localhost:5173/studentdashboard`);
+          }else{
+            window.location.replace('http://localhost:5173/dashboard')
+          }
+        }
+      }).catch(err=>{
+        console.log(err);
+      })
+    }
   }
 
   const handleshowpassword = () =>

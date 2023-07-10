@@ -3,8 +3,8 @@ import {Jobs} from '../models/Jobs.js';
 export const createJob = async(req,res)=>{
     try {
         const {_id} = req.user_name ;
-        const {title , description} = req.body ;
-        const data = await Jobs.create({title , description ,client_id:_id , applied_user:{}});
+        const {title , description, budget ,skills} = req.body ;
+        const data = await Jobs.create({title , description ,client_id:_id ,budget , skills , applied_user:{}});
 
         res.status(200).json({sucess:true , message:"Jobs Posted"});
     } catch (error) {
@@ -23,7 +23,7 @@ export const Apply_job = async(req,res)=>{
         const applied = job.applied_user ;
 
         if(applied.includes(_id)){
-            return res.status(200).json({sucess:true , message:"Alreay Rregistered"})
+            return res.status(200).json({sucess:true , message:"Alreay Rregistered For This Job"})
         }
         
          await Jobs.updateOne({_id:job_id}, {$push: {applied_user:_id}});

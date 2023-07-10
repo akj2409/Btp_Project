@@ -1,25 +1,39 @@
-import express from "express";
-import { connectDb } from "./db/database.js";
-import userRouter from "./Routes/user.js";
-import jobRouter from "./Routes/jobs.js";
+import express from 'express' ;
+import {connectDb} from './db/database.js'
+import userRouter from './routes/user.js'
+import jobRouter from './routes/jobs.js'
 import projectRouter from "./routes/projects.js";
+import detailsRouter from "./routes/details.js"
+import cors from 'cors';
 
-connectDb();
+ connectDb();
 const app = express();
 app.use(express.json());
+app.use(cors());
+app.use(cors({
+    origin:'http://localhost:5173'
+}));
 
 const PORT = 5000;
 
-app.use("/users", userRouter);
-app.use("/jobs", jobRouter);
+
+
+app.use('/users',userRouter);
+app.use('/jobs',jobRouter);
 app.use("/project", projectRouter);
 
-app.use("/", (req, res) => {
-  res.send("Nice Working");
-});
-app.listen(PORT, () => {
-  console.log(`server Is running on ${PORT}`);
-});
+app.use('/saveDetails' , detailsRouter);
+
+
+app.use('/' , (req,res)=>{
+    res.send("Nice Working");
+})
+app.listen(PORT , ()=>{
+    console.log(`server Is running on ${PORT}`);
+})
+
+
+
 
 // login Api
 // http://localhost:5000/users/login
@@ -30,11 +44,14 @@ app.listen(PORT, () => {
 // userDetail Api
 // http://localhost:5000/users/details
 
+
 // userDetail by id
 // http://localhost:5000/users/details_by_id
 
-// All Applied jobs of user
+// All Applied jobs of user 
 // http://localhost:5000/users/applied_jobs
+
+
 
 // jobs Api
 
@@ -44,11 +61,20 @@ app.listen(PORT, () => {
 // apply job
 // http://localhost:5000/jobs/apply
 
-// All jobs of client
+// All jobs of client 
 // http://localhost:5000/jobs/jobs_of_client
+
+
+
 
 //project Api
 
 //Post Project
-//http://localhost:5000/projects/post_project
-//http://localhost:5000/jobs/all_projects
+//http://localhost:5000/project/post_project
+
+// get All Projects
+//http://localhost:5000/project/all_projects
+
+
+// Details Save
+// http://localhost:5000/saveDetails/save

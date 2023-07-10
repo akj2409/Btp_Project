@@ -99,7 +99,7 @@ const Projectform = () => {
       <div className=" section_padding h-screen bg-background flex justify-center s:px-0 vm:px-0">
       <div className=' bg-foreground flex justify-between items-center flex-col gap-10 m-auto rounded-lg mt-4 p-5 w-[70%]  shadow-[0px_1px_20px_rgba(14,30,37,0.12)] s:w-4/5 s:p-2.5 sm:w-6/12'>
       <div className="flex flex-col justify-center items-center text-xl font-manrope font-semibold">
-        <img className="w-[62px] h-[62px]" src="/images/project2.jpg" alt="lock" />
+        <img className="w-[62px] h-[62px]" src="/images/project2.png" alt="lock" />
       </div>
         <form className="flex w-[80%] flex-col gap-5 justify-evenly s:w-full vm:w-full" onSubmit={()=>{handleSubmit}} >
         <div>

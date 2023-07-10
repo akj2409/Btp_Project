@@ -2,8 +2,13 @@ import {User} from '../models/userModel.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { Jobs } from '../models/Jobs.js';
+import {validationResult} from 'express-validator';
 
 export const Register = async (req,res)=>{
+    const errors = validationResult(req).errors;
+    if (errors.length!=0) {
+      return res.status(400).json({ sucess:false , errors: errors });
+    }
     const {first_name ,last_name , email , password , role} = req.body ;
     
         try {
@@ -26,6 +31,10 @@ export const Register = async (req,res)=>{
 }
 
 export const Login = async (req,res) =>{
+    const errors = validationResult(req).errors;
+    if (errors.length!=0) {
+      return res.status(400).json({ sucess:false , errors: errors });
+    }
     const {email , password} = req.body ;
 
     try {
@@ -40,7 +49,7 @@ export const Login = async (req,res) =>{
 
        const token = jwt.sign({_id:user._id} , "idhgfuighuehgkjjg");
 
-       return res.status(200).json({sucess:true , token , message:"Logged In"});
+       return res.status(200).json({sucess:true , token , message:"Logged In" , user});
     } catch (error) {
         res.status(201).json({sucess:false , message:error});
     }
