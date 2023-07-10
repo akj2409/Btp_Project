@@ -14,7 +14,9 @@ import { Product } from "../../interfaces/Data";
 
 const AllJoburl = 'http://localhost:5000/jobs/jobs_of_client'
 
+
 const jobcards: {title: string,skillset: string[],amount: string,id:string}[] = [] ;
+
 
 const DashboardPage = () => {
   const navigate = useNavigate();
