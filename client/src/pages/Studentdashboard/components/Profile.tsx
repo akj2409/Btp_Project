@@ -8,6 +8,7 @@ import Projectcard from "./Projectcard";
 const fetchurl = 'http://localhost:5000/users/details';
 const saveurl = 'http://localhost:5000/saveDetails/save';
 const fetchDetailsurl = 'http://localhost:5000/saveDetails/getDetails';
+const fetchprojectsurl = 'http://localhost:5000/project/all_projects';
 
 const projectcards = [
   {
@@ -33,7 +34,7 @@ const projectcards = [
   },
 ];
 
-
+const projectards: {title: string,skillset: string[],link: string,id:string}[] = [] ;
 
 const Profile = () => {
   const inputRef = useRef() as React.MutableRefObject<HTMLImageElement>;
@@ -56,7 +57,7 @@ const Profile = () => {
   const [bio,setbio] = useState("");
   const [gitlink,setgitlink] = useState("");
   const [linkedinlink,setlinkedinlink] = useState("");
-  
+  const [projectdata,setprojectdata] = useState([]);
   const handlemobile =(e:any)=>{
     setmobile(e.target.value);
   }
@@ -146,9 +147,40 @@ const Profile = () => {
     })
   }
 
+  const fetchProjects = async()=>{
+    const token = localStorage.getItem('token');
+
+    await fetch(fetchprojectsurl , {
+      method:'GET',
+      headers:{
+        "Content-Type":"application/json",
+        "token":`${token}`
+      }
+    }).then(async(res)=>{
+      const data = await res.json();
+      console.log(data);
+      setprojectdata(data.projects);
+      let arr = data.projects ;
+          projectards.length = 0;
+          arr.forEach((element: { title: any; Skills: any; githubProject: any; _id: any; }) => {
+            const object = {
+              title: element.title,
+              skillset: element.Skills,
+              link: element.githubProject,
+              id:element._id
+            }
+            projectards.push(object);
+          });
+      
+    }).catch(err=>{
+      console.log(err);
+    })
+  }
+
   useEffect(() => {
     fetchuser()
     fetchDetails()
+    fetchProjects();
   },[]);
 
  
@@ -280,9 +312,10 @@ const Profile = () => {
                     Loading
                   </div>
                 ) : (
-                  projectcards.map((projectcard, i) => (
+                  projectards.map((projectcard, i) => (
                     <Projectcard
                       key={i}
+                      id={projectcard.id}
                       title={projectcard.title}
                       skillset={projectcard.skillset}
                       link={projectcard.link}

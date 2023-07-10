@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { Theme, useTheme } from "@mui/material";
 
+const addurl = 'http://localhost:5000/project/post_project';
 
 const skills = [
     "HTML",
@@ -60,7 +61,7 @@ const Projectform = () => {
       const {
         target: { value },
       } = event;
-      console.log(value);
+      // console.log(value);
       setskillset(typeof value === "string" ? value.split(",") : value);
       var abc = "";
       for (var i = 0; i < value.length; i++) {
@@ -76,12 +77,33 @@ const Projectform = () => {
   
    
   
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
       e.preventDefault();
-      useFetch("/asdasd", {
-        method: "POST",
-        body: { title: title, link: link, skillset: skillset },
-      });
+      console.log({title: title, link: link, skillset: skillset});
+
+      const object = {
+        "title":title,
+        "githubProject":link,
+        "Skills":skillset
+      }
+      console.log(object);
+
+      const token = localStorage.getItem('token');
+
+      await fetch(addurl , {
+        method:'POST',
+        headers:{
+          "Content-Type":"application/json",
+          "token":`${token}`
+        },
+        body:JSON.stringify(object)
+      }).then(async(res)=>{
+        const data = await res.json();
+        console.log(data);
+      }).catch(error=>{
+        console.log(error);
+      })
+      window.location.replace('http://localhost:5173/profile');
     };
   
     const handletitle = (e: any) => {
@@ -101,7 +123,7 @@ const Projectform = () => {
       <div className="flex flex-col justify-center items-center text-xl font-manrope font-semibold">
         <img className="w-[62px] h-[62px]" src="/images/project2.png" alt="lock" />
       </div>
-        <form className="flex w-[80%] flex-col gap-5 justify-evenly s:w-full vm:w-full" onSubmit={()=>{handleSubmit}} >
+        <form className="flex w-[80%] flex-col gap-5 justify-evenly s:w-full vm:w-full" onSubmit={handleSubmit} >
         <div>
               <h1 className="font-manrope font-bold text-black text-base mb-2">
                 Enter your project's title
@@ -162,11 +184,13 @@ const Projectform = () => {
                   ))}
                 </Select>
               </FormControl>
+
             </div>
+            <div className="flex flex-row justify-center my-4">
+             <button  className="btn-3 " type="submit"> Add Project </button>
+            </div>   
         </form>
-        <div className="flex flex-row justify-start mt-2">
-        <button  className="btn-3 " type="submit"> Add Project </button>
-        </div>
+        
       </div>
       </div>
     </>

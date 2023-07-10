@@ -18,7 +18,7 @@ const Navbar = () => {
     <div className="flex justify-between items-center sticky w-full px-[6rem] py-[.1rem] bg-foreground z-[100] shadow-xl s:p-8 l:px-16 l:py-4">
       <div className=" flex-1 flex justify-start items-center ">
         <div className="mr-16 cursor-pointer">
-          <h3 className="font-manrope text-black font-extrabold text-2xl s:text-xl">Edu-freelancer</h3>
+          <h3 className="font-manrope text-black font-extrabold text-2xl s:text-xl">Aviate-freelance</h3>
         </div>
         <div className="flex flex-row l:hidden">
           <p className="p-style"><a onClick={() => navigate("/")}>Home</a></p>

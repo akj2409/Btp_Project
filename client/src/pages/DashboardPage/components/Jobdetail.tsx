@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Dashbar from "./Dashbar";
 import { FaRupeeSign } from "react-icons/fa";
 import { BsChatLeftTextFill } from "react-icons/bs";
@@ -97,8 +97,89 @@ const rows = [
   ),
 ];
 
+const fetchjoburl = 'http://localhost:5000/jobs/jobsbyid/'
+const fetchuserbyidurl = 'http://localhost:5000/users/user_by_id/'
+const fetchdetailsurl = 'http://localhost:5000/saveDetails/getDetailsbyid/'
+
+
+const applied_users: {name: string,bio: string,email: string,mobile_no:string , _id:string}[] = [] ;
+
 const Jobdetail = () => {
-  const { id } = useParams();
+
+  const [jobdetaildata,setjobdetaildata] = useState({title:'' , id:'' , applied_user:'' , description:'', skills:'' , budget:''});
+
+  const id = localStorage.getItem('id');
+  // console.log(id);
+let applied_users_id ;
+  const fetchjob = async()=>{
+    await fetch(fetchjoburl+id , {
+      method:'GET',
+      headers:{
+        "Content-Type":"application/json",
+      }
+    }).then(async(res)=>{
+      const data = await res.json();
+      setjobdetaildata({title:data.job.title , id:data.job.id ,applied_user:data.job.applied_user , description:data.job.description , skills:data.job.skills ,budget:data.job.budget});
+      console.log(data.job);
+      applied_users_id = data.job.applied_user ;
+      applied_users_id.forEach((id1: string) => {
+        if(id1.length) getapplieduser(id1);
+      });
+      console.log(applied_users);
+    }).catch(err=>{
+      console.log(err);
+    })
+  }
+
+
+  const getapplieduser = async(id:string)=>{
+     let name , mobile_no , email , bio ,_id = id;
+      await fetch(fetchuserbyidurl+id, {
+      method:'GET',
+      headers:{
+        "Content-Type":"application/json",
+      }
+      }).then(async(res)=>{
+        const data = await res.json();
+        name = data.user.first_name ;
+        console.log(name);
+        email = data.user.email ;
+        console.log(email);
+      }).catch(err=>{
+        console.log(err);
+      })
+
+      await fetch(fetchdetailsurl+id,{
+        method:'GET',
+      headers:{
+        "Content-Type":"application/json",
+      }
+      }).then(async(res)=>{
+        const data = await res.json();
+        console.log(data);
+        mobile_no = data.details[0].mobile_no ;
+        bio = data.details[0].bio;
+        console.log(mobile_no);
+        console.log(bio);
+      }).catch(err=>{
+        console.log(err);
+      })
+
+      // const object = {
+      //   "name":name,
+      //    "mobile_no": mobile_no , 
+      //    "email" :email ,
+      //     "bio":bio , "_id":_id
+      // }
+
+      // applied_users.push(object);
+  }
+
+  
+
+  useEffect(()=>{
+    fetchjob();
+  },[]);
  
   return (
     <>
@@ -116,7 +197,7 @@ const Jobdetail = () => {
                   Title
                 </h2>
                 <p className="font-manrope text-grey text-sm">
-                  Time table generator
+                  {jobdetaildata.title}
                 </p>
               </div>
               <div className="flex w-2/5 flex-col">
@@ -125,7 +206,7 @@ const Jobdetail = () => {
                 </h2>
                 <p className=" flex items-center font-manrope text-grey text-sm">
                   <FaRupeeSign />
-                  1000
+                  {jobdetaildata.budget}
                 </p>
               </div>
             </div>
@@ -134,7 +215,7 @@ const Jobdetail = () => {
                 Skills
               </h2>
               <p className="font-manrope text-grey text-sm">
-                CSS, Javascript, React
+                {jobdetaildata.skills}
               </p>
             </div>
             <div className="flex flex-col">
@@ -142,15 +223,7 @@ const Jobdetail = () => {
                 Description
               </h2>
               <p className="font-manrope text-grey text-sm">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Mollitia vero officiis dolores consectetur aperiam saepe. Lorem
-                ipsum dolor, sit amet consectetur adipisicing elit. Atque
-                ducimus dolorem voluptas error recusandae dolores voluptatibus
-                corrupti in hic molestiae, similique dolor cupiditate sapiente
-                vero esse maiores corporis numquam illo explicabo consequatur,
-                blanditiis laborum aperiam exercitationem accusantium. Autem,
-                temporibus enim corporis rem obcaecati a, sunt quos veniam,
-                velit fuga aspernatur!
+              {jobdetaildata.description}
               </p>
             </div>
           </div>

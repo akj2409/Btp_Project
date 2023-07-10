@@ -46,7 +46,7 @@ app.listen(PORT , ()=>{
 
 
 // userDetail by id
-// http://localhost:5000/users/details_by_id
+// http://localhost:5000/users/user_by_id/:id
 
 // All Applied jobs of user 
 // http://localhost:5000/users/applied_jobs
@@ -64,13 +64,24 @@ app.listen(PORT , ()=>{
 // All jobs of client 
 // http://localhost:5000/jobs/jobs_of_client
 
+// job by id
+// http://localhost:5000/jobs/jobsbyid/:id
+
+
+// all jobs 
+// http://localhost:5000/jobs/alljobs
+
+// deletejob
+// http://localhost:5000/jobs/deletejob/:id
+
+
 
 
 
 //project Api
 
 //Post Project
-//http://localhost:5000/project/post_project
+// http://localhost:5000/project/post_project
 
 // get All Projects
 //http://localhost:5000/project/all_projects
@@ -81,3 +92,6 @@ app.listen(PORT , ()=>{
 
 // getDetails
 // http://localhost:5000/saveDetails/getDetails
+
+// get details by id
+// http://localhost:5000/saveDetails/getDetailsbyid/:id

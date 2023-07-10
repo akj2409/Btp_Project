@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {BsFillPatchCheckFill} from "react-icons/bs";
 import {
   Stepper,
   Step,
@@ -320,8 +321,8 @@ const Stepperform = () => {
         </Stepper>
       </div>
       {activestep === 3 ? (
-        <h1 className="text-xl text-black font-bold text-center font-manrope">
-          {" "}
+        <h1 className=" flex flex-col justify-center items-center gap-4 text-xl text-black font-bold text-center font-manrope">
+          <BsFillPatchCheckFill size={'50px'} color="#4adf52"/>
           Job post successfully
         </h1>
       ) : (

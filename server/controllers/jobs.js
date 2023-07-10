@@ -59,3 +59,27 @@ export const job_by_id = async(req,res)=>{
         console.log(error);
     }
 }
+
+
+export const alljobs = async(req,res)=>{
+    try {
+        const jobs = await Jobs.find();
+        console.log(jobs);
+        res.status(200).json({sucess:true , message:"All Jobs Found" , jobs});
+    } catch (error) {
+        res.status(500).json({sucess:false , message:"Server Error" , error:error});
+        console.log(error);
+    }
+}
+
+export const deletejob = async(req,res)=>{
+    try {
+        const id = req.params['id'];
+
+        await Jobs.deleteOne({_id:id});
+        res.status(200).json({sucess:true ,message:"Job Deleted "});
+    } catch (error) {
+        res.status(500).json({sucess:false , message:"Server Error" , error:error});
+        console.log(error);
+    }
+}
