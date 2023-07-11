@@ -96,10 +96,9 @@ let applied_users_id ;
         }
         }).then(async(res)=>{
           const data1 = await res.json();
-          console.log(data1.details.length);
-          if(data1.details.length==='1'){
-            object.mobile_no = data1.details[0].mobile_no? data1.details[0].mobile_no : '' ;
-            object.bio = data1.details[0].bio ? data1.details[0].bio : '';
+          if(data1.details.length===1){
+            object.mobile_no =  data1.details[0].mobile_no;
+            object.bio =  data1.details[0].bio ;
           }
 
           if(size-1 > rows.length ){
@@ -121,9 +120,7 @@ let applied_users_id ;
     fetchjob();
   },[]);
 
-  useEffect(()=>{
-    console.log(userstate);
-  },[userstate]);
+  console.log(rows);
 
   const navigate = useNavigate();
 
@@ -185,7 +182,8 @@ let applied_users_id ;
           {" "}
           Best Matches
         </h1>
-        <div className="bg-foreground flex flex-col gap-4 m-auto rounded-lg  p-5 w-full  shadow-[0px_1px_20px_rgba(14,30,37,0.12)]">
+
+        {rows.length ?<div className="bg-foreground flex flex-col gap-4 m-auto rounded-lg  p-5 w-full  shadow-[0px_1px_20px_rgba(14,30,37,0.12)]">
           <TableContainer>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -251,7 +249,7 @@ let applied_users_id ;
               </TableBody>
             </Table>
           </TableContainer>
-        </div>
+        </div> : <h1>No One Applied Yet</h1>}
       </div>
     </>
   );

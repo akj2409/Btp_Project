@@ -2,8 +2,9 @@ import React,{useState} from 'react'
 import {IoIosArrowUp,IoIosArrowDown} from 'react-icons/io';
 import { FaRupeeSign } from "react-icons/fa";
 const applyurl = 'http://localhost:5000/jobs/apply';
+const revokejoburl = 'http://localhost:5000/jobs/revoke/'
 
-const Jobcard = ({id,title,skillset,amount,description}:any) => {
+const Jobcard = ({id,title,skillset,amount,description , property , func}:any) => {
     const token = localStorage.getItem('token');
     const applyforjob= async()=>{
       const object = {
@@ -19,7 +20,27 @@ const Jobcard = ({id,title,skillset,amount,description}:any) => {
       }).then(async(res)=>{
         const data = await res.json();
         alert(data.message);
-        console.log(data);
+        if(data.sucess){
+          func();
+        }
+      }).catch(err=>{
+        console.log(err);
+      })
+    }
+
+    const revokejob = async()=>{
+      await fetch(revokejoburl+id ,{
+        method:'GET',
+      headers:{
+        "Content-Type":"application/json",
+        "token":`${token}`
+      }
+      }).then(async(res)=>{
+        const data = await res.json();
+        alert(data.message);
+        if(data.sucess){
+          func(true);
+        }
       }).catch(err=>{
         console.log(err);
       })
@@ -40,7 +61,10 @@ const Jobcard = ({id,title,skillset,amount,description}:any) => {
         </div>
     </div>
     <div className='flex justify-start gap-2 items-center'>
-    <button  className="text-indigo-500  p-2 font-medium rounded text-sm  cursor-pointer bg-foreground font-manrope outline-none border-none" onClick={applyforjob}>Apply</button>
+      {property ?<button  className="text-indigo-500  p-2 font-medium rounded text-sm  cursor-pointer bg-foreground font-manrope outline-none border-none" onClick={applyforjob}>Apply</button> :
+      <button  className="text-indigo-500  p-2 font-medium rounded text-sm  cursor-pointer bg-foreground font-manrope outline-none border-none" onClick={revokejob}>Revoke</button>
+      }
+    
         {toggledetail ? (
             <IoIosArrowUp className='hover:cursor-pointer' onClick={()=>settoggledetail(false)} size="20px" color="#4923B4"/>
         ):(

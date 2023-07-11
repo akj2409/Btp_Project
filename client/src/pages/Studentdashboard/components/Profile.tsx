@@ -4,6 +4,8 @@ import Dashbar from "./Dashbar";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import Projectcard from "./Projectcard";
+// import fs from 'fs'
+import { Base } from "@syncfusion/ej2-base";
 
 const fetchurl = 'http://localhost:5000/users/details';
 const saveurl = 'http://localhost:5000/saveDetails/save';
@@ -49,6 +51,8 @@ const Profile = () => {
   const handleimagechange = (e: { target: { files: any[] } }) => {
     const file = e.target.files[0];
     setimage(file);
+    console.log(image);
+    console.log(typeof(image));
   };
 
   const [name,setname] = useState("aditya");
@@ -202,6 +206,7 @@ const Profile = () => {
     })
     fetchProjects();
   }
+  
  
    
 
@@ -240,7 +245,6 @@ const Profile = () => {
                   />
                 <p className="text-sm text-black">{address}</p>
               </div>
-
               <div className="flex flex-col justify-center items-center mx-4 mb-4 mt-12 py-0 px-5 w-full">
                 <div className="flex flex-row justify-between items-center my-2 mx-0 w-full vs:flex-col vs:gap-2">
                   <div className="flex flex-row justify-center items-center">
@@ -325,7 +329,7 @@ const Profile = () => {
                 <AiFillPlusCircle size="30px" color="#4923B4" />
               </button>
             </div>
-            <div className="flex flex-wrap justify-start">
+            <div className="flex w-full flex-wrap justify-start">
                 {false ? (
                   <div className="h-screen justify-center items-center text-5xl italic text-teal-600">
                     Loading

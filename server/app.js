@@ -61,6 +61,9 @@ app.listen(PORT , ()=>{
 // apply job
 // http://localhost:5000/jobs/apply
 
+// revoke job
+// http://localhost:5000/jobs/revoke/:jobid
+
 // All jobs of client 
 // http://localhost:5000/jobs/jobs_of_client
 
@@ -73,6 +76,15 @@ app.listen(PORT , ()=>{
 
 // deletejob
 // http://localhost:5000/jobs/deletejob/:id
+
+
+// All Applied jobs
+// http://localhost:5000/jobs/applied_job
+
+// Category wise jobs
+// http://localhost:5000/jobs/filterbycategory
+
+
 
 
 
