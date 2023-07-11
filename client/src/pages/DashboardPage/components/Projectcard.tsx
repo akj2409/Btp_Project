@@ -1,7 +1,7 @@
 import React from 'react'
 import { AiFillDelete } from "react-icons/ai";
 
-const Projectcard = ({id,title,skillset,link , deleteFunc}:any) => {
+const Projectcard = ({id,title,skillset,link}:any) => {
   
   return (
     <div className=" flex w-full justify-between relative z-0 flex-row gap-4 m-4 p-4 rounded-[10px] bg-foreground hover:shadow-[0px_7px_30px_0px_rgba(90,114,123,0.11)] l:flex-col l:w-2/5 xm:w-4/5 ">
@@ -15,11 +15,6 @@ const Projectcard = ({id,title,skillset,link , deleteFunc}:any) => {
           </div>
         ))}
       </div>
-    </div>
-    <div className="flex justify-start gap-2 items-center ">
-      <button onClick={()=>deleteFunc(id)}>
-        <AiFillDelete size="20px" color="#4923B4" />
-      </button>
     </div>
   </div>
   )

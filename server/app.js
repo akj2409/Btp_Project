@@ -86,6 +86,13 @@ app.listen(PORT , ()=>{
 // get All Projects
 //http://localhost:5000/project/all_projects
 
+// get all projects by user id
+//http://localhost:5000/project/all_projects/:id
+
+
+// delete project 
+// http://localhost:5000/project/deleteproject/:id
+
 
 // Details Save
 // http://localhost:5000/saveDetails/save

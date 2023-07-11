@@ -80,8 +80,10 @@ const DashboardPage = () => {
       }).then(async(res)=>{
         const data = await res.json();
         console.log(data);
+        alert(data.message);
       }).catch(err=>{
         console.log(err);
+        alert(err.message);
       })
       fetchDetails();
     }
@@ -137,7 +139,7 @@ const DashboardPage = () => {
           <h1 className="font-manrope mb-4 text-[44px]/[62px] font-semibold text-black text-center xm:text-[28px]/[40px]">
             Manage Jobs
           </h1>
-          <div className="flex flex-col justify-center">
+          <div className="flex w-3/5 items-center flex-col justify-center l:w-4/5 xm:w-4/5">
             {false ? (
               <div className="h-screen justify-center items-center text-5xl italic text-teal-600">
                 Loading

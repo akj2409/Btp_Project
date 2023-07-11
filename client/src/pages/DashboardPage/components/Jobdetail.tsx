@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Dashbar from "./Dashbar";
 import { FaRupeeSign } from "react-icons/fa";
 import { BsChatLeftTextFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 import {
   Table,
   TableBody,
@@ -19,84 +20,19 @@ function createData(
   name: string,
   bio: string,
   email: string,
-  skilltech: string
+  mobile_no: string,
+  id:string
 ) {
-  return { rank, name, bio, email, skilltech };
+  return { rank, name, bio, email, mobile_no ,id};
 }
 
-const rows = [
-  createData(
-    1,
-    "Frozen yoghurt",
-    "Web Designer",
-    "rohan@gmail.com",
-    "CSS, Js, React, Mongodb"
-  ),
-  createData(
-    2,
-    "Ice cream sandwich",
-    "Web Designer",
-    "rohan@gmail.com",
-    "CSS, Js, React, Mongodb"
-  ),
-  createData(
-    3,
-    "Eclair",
-    "Web Designer",
-    "rohan@gmail.com",
-    "CSS, Js, React, Mongodb"
-  ),
-  createData(
-    4,
-    "Cupcake",
-    "Web Designer",
-    "rohan@gmail.com",
-    "CSS, Js, React, Mongodb"
-  ),
-  createData(
-    5,
-    "Gingerbread",
-    "Web Designer",
-    "rohan@gmail.com",
-    "CSS, Js, React, Mongodb"
-  ),
-  createData(
-    6,
-    "Frozen yoghurt",
-    "Web Designer",
-    "rohan@gmail.com",
-    "CSS, Js, React, Mongodb"
-  ),
-  createData(
-    7,
-    "Ice cream sandwich",
-    "Web Designer",
-    "rohan@gmail.com",
-    "CSS, Js, React, Mongodb"
-  ),
-  createData(
-    8,
-    "Eclair",
-    "Web Designer",
-    "rohan@gmail.com",
-    "CSS, Js, React, Mongodb"
-  ),
-  createData(
-    9,
-    "Cupcake",
-    "Web Designer",
-    "rohan@gmail.com",
-    "CSS, Js, React, Mongodb"
-  ),
-  createData(
-    10,
-    "Gingerbread",
-    "Web Designer",
-    "rohan@gmail.com",
-    "CSS, Js, React, Mongodb"
-  ),
-];
 
+const rows :{rank: number,
+  name: string,
+  bio: string,
+  email: string,
+  mobile_no: string,
+  id:string}[] = [];
 const fetchjoburl = 'http://localhost:5000/jobs/jobsbyid/'
 const fetchuserbyidurl = 'http://localhost:5000/users/user_by_id/'
 const fetchdetailsurl = 'http://localhost:5000/saveDetails/getDetailsbyid/'
@@ -105,9 +41,11 @@ const fetchdetailsurl = 'http://localhost:5000/saveDetails/getDetailsbyid/'
 const applied_users: {name: string,bio: string,email: string,mobile_no:string , _id:string}[] = [] ;
 
 const Jobdetail = () => {
-
+  
   const [jobdetaildata,setjobdetaildata] = useState({title:'' , id:'' , applied_user:'' , description:'', skills:'' , budget:''});
+  const [userstate , setuserstate] = useState({})
 
+  let size: number ;
   const id = localStorage.getItem('id');
   // console.log(id);
 let applied_users_id ;
@@ -120,12 +58,14 @@ let applied_users_id ;
     }).then(async(res)=>{
       const data = await res.json();
       setjobdetaildata({title:data.job.title , id:data.job.id ,applied_user:data.job.applied_user , description:data.job.description , skills:data.job.skills ,budget:data.job.budget});
-      console.log(data.job);
+      // console.log(data.job);
       applied_users_id = data.job.applied_user ;
-      applied_users_id.forEach((id1: string) => {
-        if(id1.length) getapplieduser(id1);
-      });
-      console.log(applied_users);
+      applied_users.length=0;
+      size = applied_users_id.length ;
+       applied_users_id.forEach((id1: string) => {
+        console.log("hlo this is check");
+        if(id1.length && applied_users.length < size) getapplieduser(id1);
+      })
     }).catch(err=>{
       console.log(err);
     })
@@ -133,7 +73,13 @@ let applied_users_id ;
 
 
   const getapplieduser = async(id:string)=>{
-     let name , mobile_no , email , bio ,_id = id;
+     const object: {name: string,bio: string,email: string,mobile_no:string , _id:string} = {
+       name: "",
+       bio: "",
+       email: "",
+       mobile_no: "",
+       _id: id
+     };
       await fetch(fetchuserbyidurl+id, {
       method:'GET',
       headers:{
@@ -141,45 +87,50 @@ let applied_users_id ;
       }
       }).then(async(res)=>{
         const data = await res.json();
-        name = data.user.first_name ;
-        console.log(name);
-        email = data.user.email ;
-        console.log(email);
+        object.name = data.user.first_name ;
+        object.email = data.user.email ;
+        await fetch(fetchdetailsurl+id,{
+          method:'GET',
+        headers:{
+          "Content-Type":"application/json",
+        }
+        }).then(async(res)=>{
+          const data1 = await res.json();
+          console.log(data1.details.length);
+          if(data1.details.length==='1'){
+            object.mobile_no = data1.details[0].mobile_no? data1.details[0].mobile_no : '' ;
+            object.bio = data1.details[0].bio ? data1.details[0].bio : '';
+          }
+
+          if(size-1 > rows.length ){
+            rows.push(createData(rows.length+1 , object.name ,object.bio ,object.email , object.mobile_no , object._id))
+            console.log(rows);
+
+          }
+          setuserstate(applied_users);
+          // console.log(rows) 
+                   
+        })
       }).catch(err=>{
         console.log(err);
       })
-
-      await fetch(fetchdetailsurl+id,{
-        method:'GET',
-      headers:{
-        "Content-Type":"application/json",
-      }
-      }).then(async(res)=>{
-        const data = await res.json();
-        console.log(data);
-        mobile_no = data.details[0].mobile_no ;
-        bio = data.details[0].bio;
-        console.log(mobile_no);
-        console.log(bio);
-      }).catch(err=>{
-        console.log(err);
-      })
-
-      // const object = {
-      //   "name":name,
-      //    "mobile_no": mobile_no , 
-      //    "email" :email ,
-      //     "bio":bio , "_id":_id
-      // }
-
-      // applied_users.push(object);
   }
 
-  
 
   useEffect(()=>{
     fetchjob();
   },[]);
+
+  useEffect(()=>{
+    console.log(userstate);
+  },[userstate]);
+
+  const navigate = useNavigate();
+
+  const func=(id:any)=>{
+    localStorage.setItem('user_id',id);
+    navigate(`/userdetail`)
+  }
  
   return (
     <>
@@ -240,7 +191,7 @@ let applied_users_id ;
               <TableHead>
                 <TableRow>
                   <TableCell>
-                    <p className="font-manrope text-lg font-extrabold">Rank</p>
+                    <p className="font-manrope text-lg font-extrabold">S.no</p>
                   </TableCell>
                   <TableCell>
                     <p className="font-manrope text-lg font-extrabold">User</p>
@@ -252,49 +203,49 @@ let applied_users_id ;
                   </TableCell>
                   <TableCell>
                     <p className="font-manrope text-lg font-extrabold">
-                      Skill Tech
+                      Mobile
                     </p>
                   </TableCell>
-                  <TableCell>
+                  {/* <TableCell>
                     <p className="font-manrope text-lg font-extrabold">Chat</p>
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    key={row.rank}
-                    // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                {rows.map((user,i) => (
+                  <TableRow 
+                    onClick={()=>func(user.id)}
+                    key={i}
                   >
                     <TableCell>
-                      <h1 className="font-manrope text-grey">{row.rank}</h1>
+                      <h1 className="font-manrope text-grey">{user.rank}</h1>
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-row gap-4 items-center ">
                         <div>
                           <Avatar
                             sx={{ backgroundColor: "#4923B4" }}
-                            alt={row.name}
+                            alt={user.name}
                             src="."
                           />
                         </div>
                         <div className="flex flex-col gap-1">
-                          <h1 className="font-bold font-manrope">{row.name}</h1>
-                          <h1 className="font-manrope text-grey">{row.bio}</h1>
+                          <h1 className="font-bold font-manrope">{user.name}</h1>
+                          <h1 className="font-manrope text-grey">{user.bio}</h1>
                         </div>
                       </div>
                     </TableCell>
                     <TableCell>
-                      <h1 className="font-manrope text-grey">{row.email}</h1>
+                      <h1 className="font-manrope text-grey">{user.email}</h1>
                     </TableCell>
                     <TableCell>
                       <h1 className="font-manrope text-grey">
-                        {row.skilltech}
+                        {user.mobile_no}
                       </h1>
                     </TableCell>
-                    <TableCell>
+                    {/* <TableCell>
                       <BsChatLeftTextFill size={"30px"} color="#4923B4" />
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 ))}
               </TableBody>

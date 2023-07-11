@@ -31,3 +31,31 @@ export const all_projects_of_freelancer = async (req, res) => {
     console.log(error);
   }
 };
+
+export const all_projects_of_freelancerbyid= async(req,res)=>{
+  try {
+    const id = req.params['id'];
+    const projects = await Projects.find({freelancer_id:id});
+    return res
+    .status(200)
+    .json({ sucess: true, message: "Projects Of freelancers by id ", projects });
+} catch (error) {
+  res
+    .status(500)
+    .json({ sucess: false, message: "Server Error", error: error });
+  console.log(error);
+}
+}
+
+export const deleteProject = async(req,res)=>{
+  try {
+    const id = req.params['id'];
+    await Projects.deleteOne({_id:id});
+    return res.status(200).json({sucess:true , message:"Project Deleted " })
+  } catch (error) {
+    res
+    .status(500)
+    .json({ sucess: false, message: "Server Error", error: error });
+  console.log(error);
+  }
+}

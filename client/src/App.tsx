@@ -8,7 +8,7 @@ import Jobform from "./pages/DashboardPage/components/Jobform";
 import Jobdetail from "./pages/DashboardPage/components/Jobdetail";
 import Studentdashboard from "./pages/Studentdashboard/Studentdashboard";
 import Projectform from "./pages/Studentdashboard/components/Projectform";
-
+import Userdetail from "./pages/DashboardPage/components/Userdetail";
 export default function App() {
   return (
     <>
@@ -20,6 +20,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/userdetail" element={<Userdetail/>}/>
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/jobform" element={<Jobform />} />
