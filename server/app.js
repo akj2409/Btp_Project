@@ -46,7 +46,7 @@ app.listen(PORT , ()=>{
 
 
 // userDetail by id
-// http://localhost:5000/users/details_by_id
+// http://localhost:5000/users/user_by_id/:id
 
 // All Applied jobs of user 
 // http://localhost:5000/users/applied_jobs
@@ -61,8 +61,31 @@ app.listen(PORT , ()=>{
 // apply job
 // http://localhost:5000/jobs/apply
 
+// revoke job
+// http://localhost:5000/jobs/revoke/:jobid
+
 // All jobs of client 
 // http://localhost:5000/jobs/jobs_of_client
+
+// job by id
+// http://localhost:5000/jobs/jobsbyid/:id
+
+
+// all jobs 
+// http://localhost:5000/jobs/alljobs
+
+// deletejob
+// http://localhost:5000/jobs/deletejob/:id
+
+
+// All Applied jobs
+// http://localhost:5000/jobs/applied_job
+
+// Category wise jobs
+// http://localhost:5000/jobs/filterbycategory
+
+
+
 
 
 
@@ -70,10 +93,17 @@ app.listen(PORT , ()=>{
 //project Api
 
 //Post Project
-//http://localhost:5000/project/post_project
+// http://localhost:5000/project/post_project
 
 // get All Projects
 //http://localhost:5000/project/all_projects
+
+// get all projects by user id
+//http://localhost:5000/project/all_projects/:id
+
+
+// delete project 
+// http://localhost:5000/project/deleteproject/:id
 
 
 // Details Save
@@ -81,3 +111,6 @@ app.listen(PORT , ()=>{
 
 // getDetails
 // http://localhost:5000/saveDetails/getDetails
+
+// get details by id
+// http://localhost:5000/saveDetails/getDetailsbyid/:id

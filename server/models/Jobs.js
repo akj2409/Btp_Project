@@ -22,6 +22,9 @@ const JobSchema= new mongoose.Schema(
           skills:{
             type:[],
           },
+          category:{
+            type:String
+          },
           applied_user:{
             type:[],
             default: undefined

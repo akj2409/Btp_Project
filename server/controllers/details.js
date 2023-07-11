@@ -46,3 +46,14 @@ export const getDetails = async(req,res)=>{
         console.log(error);
     }
 }
+
+export const getDetailsbyid = async(req,res)=>{
+    try {
+        const id = req.params['id'] ;
+        const details = await UserDetail.find({user_id:id});
+        return res.status(200).json({sucess:true,message:"Details Found" , details});
+    } catch (error) {
+        res.status(500).json({sucess:false , message:"Server Error" , error});
+        console.log(error);
+    }
+}

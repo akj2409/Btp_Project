@@ -8,7 +8,6 @@ const DetailsSchema= new mongoose.Schema(
           },
           address:{
             type:String,
-            minlength:5,
           },
           githubLink:{
             type:String

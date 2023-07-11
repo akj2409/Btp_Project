@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {BsFillPatchCheckFill} from "react-icons/bs";
 import {
   Stepper,
   Step,
@@ -35,6 +36,16 @@ const skills = [
   "Django",
 ];
 
+const categorys = [
+  "Web App",
+  "Android App",
+  "Machine Learning",
+  "Artificial Intelligence",
+  "System Design",
+  "Video Graphics",
+  "Editing"
+]
+
 const ITEM_HEIGHT = 33;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -62,8 +73,9 @@ const Stepperform = () => {
   const [title, settitle] = useState("");
   const [description, setdescription] = useState("");
   const [skillset, setskillset] = useState<string[]>([]);
+  const [category, setcategory] = useState("");
   const [abc, setabc] = useState("");
-  const values = { amount, title, description, skillset };
+  const values = { amount, title, description, skillset, category };
 
   const handleskill = (event: SelectChangeEvent<typeof skillset>) => {
     const {
@@ -89,13 +101,22 @@ const Stepperform = () => {
 
   const handleSubmit = async(e:any) => {
     e.preventDefault();
+  };
+
+  const handletitle = (e: any) => {
+    settitle(e.target.value);
+  };
+  const localfunc = async()=>{
     const token = localStorage.getItem('token');
     const object = {
       "title":values.title,
       "description":values.description,
       "budget":values.amount,
-      "skills":values.skillset
+      "skills":values.skillset,
+      "category":values.category
     }
+
+   console.log(object);
     await fetch(postjoburl,{
       method:'POST',
       headers:{
@@ -109,17 +130,20 @@ const Stepperform = () => {
     }).catch(err=>{
       console.log(err);
     })
-  };
-
-  const handletitle = (e: any) => {
-    settitle(e.target.value);
-  };
-
+  }
+  
+  const handlecategory = (e: any) => {
+    setcategory(e.target.value);
+  }
   const handledescription = (e: any) => {
     setdescription(e.target.value);
   };
   const handlenext = () => {
-    console.log(values);
+    console.log(activestep === 2)
+    if(activestep === 2){
+      console.log(values)
+      localfunc();
+    }
     setactivestep(activestep + 1);
   };
 
@@ -213,7 +237,7 @@ const Stepperform = () => {
               </h1>
               {/* <p className="font-manrope text-grey text-sm mb-2">This will help get your brief to the right talent.</p> */}
               <FormControl fullWidth>
-                <InputLabel id="skill-label">Skills</InputLabel>
+                <InputLabel id="skill-label">Skills *</InputLabel>
                 <Select
                   labelId="skill-label"
                   id="skills"
@@ -231,6 +255,34 @@ const Stepperform = () => {
                       style={getStyles(skill, skillset, theme)}
                     >
                       {skill}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+            <div>
+              <h1 className="font-manrope font-bold text-black text-base mb-2">
+                Which category best fits your project?
+              </h1>
+              <FormControl fullWidth>
+                <InputLabel id="category-label">Category *</InputLabel>
+                <Select
+                  labelId="category-label"
+                  id="categorynbhbvb"
+                  required
+                  fullWidth
+                  label="Category"
+                  value={values.category}
+                  onChange={handlecategory}
+                  MenuProps={MenuProps}
+                >
+                  {categorys.map((category,i) => (
+                    <MenuItem
+                      key={i}
+                      value={category}
+                      style={getStyles(category, skillset, theme)}
+                    >
+                      {category}
                     </MenuItem>
                   ))}
                 </Select>
@@ -268,6 +320,12 @@ const Stepperform = () => {
                   Description
                 </h2>
                 <p className="font-manrope text-grey text-sm">{description}</p>
+              </div>
+              <div className="flex flex-col">
+                <h2 className="font-manrope font-bold text-black text-base">
+                  Category
+                </h2>
+                <p className="font-manrope text-grey text-sm">{category}</p>
               </div>
               <div className="flex flex-col">
                 <h2 className="font-manrope font-bold text-black text-base">
@@ -320,8 +378,8 @@ const Stepperform = () => {
         </Stepper>
       </div>
       {activestep === 3 ? (
-        <h1 className="text-xl text-black font-bold text-center font-manrope">
-          {" "}
+        <h1 className=" flex flex-col justify-center items-center gap-4 text-xl text-black font-bold text-center font-manrope">
+          <BsFillPatchCheckFill size={'50px'} color="#4adf52"/>
           Job post successfully
         </h1>
       ) : (
