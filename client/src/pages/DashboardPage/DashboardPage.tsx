@@ -3,28 +3,48 @@ import {
   AiFillDropboxCircle,
   AiFillPlusCircle,
 } from "react-icons/ai";
-import { FaRupeeSign } from "react-icons/fa";
 import Graph from "./components/Graph";
 import Jobcard from "./components/Jobcard";
 import Dashbar from "./components/Dashbar";
 import { useNavigate } from "react-router-dom";
 import {Avatar} from "@mui/material";
-import useFetch from "../../hooks/useFetch";
-import { Product } from "../../interfaces/Data";
 
 const AllJoburl = 'http://localhost:5000/jobs/jobs_of_client'
-
+const deleteurl = 'http://localhost:5000/jobs/deletejob/';
+const fetchuserdetailsurl = 'http://localhost:5000/users/details';
 
 const jobcards: {title: string,skillset: string[],amount: string,id:string}[] = [] ;
 
-
 const DashboardPage = () => {
+
+  const token = localStorage.getItem('token');
   const navigate = useNavigate();
     // const [jobcards, loading] = useFetch<Product[]>("/dummy/jobs.json");
   const[job,setjob] = useState("0"); 
   const[jobdata, setjobdata] = useState([]); 
+  const [firstname,setfirstname] = useState("");
+  const [lastname,setlastname] = useState("");
+  const [email,setemail] = useState("");
+
+
+    const fetchuser = async()=>{
+      await fetch(fetchuserdetailsurl , {
+        method:'GET',
+          headers:{
+            "Content-Type":"application/json",
+            "token":`${token}`
+          }
+        }).then(async(res)=>{
+          const data = await res.json();
+          console.log(data);
+          setfirstname(data.user.first_name);
+          setlastname(data.user.last_name);
+          setemail(data.user.email);
+        }).catch(err=>{
+          console.log(err);
+        })
+    }
     const fetchDetails = async()=>{
-        const token = localStorage.getItem('token');
         await fetch(AllJoburl, {
           method:'GET',
           headers:{
@@ -51,24 +71,43 @@ const DashboardPage = () => {
         })
     }
 
+    const deleteFunc = async(id: string)=>{
+      await fetch(deleteurl+id , {
+        method:'DELETE',
+        headers:{
+          "Content-Type":"application/json"
+        }
+      }).then(async(res)=>{
+        const data = await res.json();
+        console.log(data);
+        alert(data.message);
+      }).catch(err=>{
+        console.log(err);
+        alert(err.message);
+      })
+      fetchDetails();
+    }
+
     useEffect(()=>{
       fetchDetails();
+      fetchuser();
     },[]);
 
   return (
     <>
       <Dashbar />
-      <div className=" p-8 bg-background">
+      <div className="h-screen bg-background">
+      <div className=" p-8  bg-background">
         <div className="flex flex-wrap flex-row justify-center items-start gap-8">
           <div className="flex-1 flex max-w-xs max-h-32 justify-center items-start flex-col gap-4 m-4 p-4 rounded-[10px] bg-foreground shadow-[0px_7px_30px_0px_rgba(90,114,123,0.11)]">
             <div className="flex flex-row w-full justify-between items-center ">
-              <h2 className="text-xl font-medium">Monis Khan</h2>
+              <h2 className="text-xl font-medium">{`${firstname} ${lastname}`}</h2>
              
-              <Avatar sx={{ width: '50px', height: '50px',backgroundColor: "#E878CF" }} alt={"Monis"} src="." />
+              <Avatar sx={{ width: '50px', height: '50px',backgroundColor: "#E878CF" }} alt={firstname} src="." />
             </div>
             <h1 className="text-sm font-semibold text-grey flex items-center mt-2 ">
       
-              moniskhandx@gmail.com
+              {email}
             </h1>
           </div>
           <div className="flex-1  max-w-xs max-h-32 flex justify-center items-start flex-col gap-4 m-4 p-4 rounded-[10px] bg-foreground shadow-[0px_7px_30px_0px_rgba(90,114,123,0.11)]">
@@ -100,7 +139,7 @@ const DashboardPage = () => {
           <h1 className="font-manrope mb-4 text-[44px]/[62px] font-semibold text-black text-center xm:text-[28px]/[40px]">
             Manage Jobs
           </h1>
-          <div className="flex flex-wrap justify-center">
+          <div className="flex w-3/5 items-center flex-col justify-center l:w-4/5 xm:w-4/5">
             {false ? (
               <div className="h-screen justify-center items-center text-5xl italic text-teal-600">
                 Loading
@@ -109,15 +148,18 @@ const DashboardPage = () => {
               jobcards.map((jobcard, i) => (
                 <Jobcard
                   key={i}
+                  id={jobcard.id}
                   title={jobcard.title}
                   skillset={jobcard.skillset}
                   amount={jobcard.amount}
+                  deleteFunc={deleteFunc}
                   //   description={jobcard.description}
                 />
               ))
             )}
           </div>
         </div>
+      </div>
       </div>
     </>
   );

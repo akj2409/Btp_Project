@@ -69,7 +69,7 @@ export const getDetail = async(req,res)=>{
 }
 
 
-export const getDetail_by_userid = async(req,res)=>{
+export const getuser_by_userid = async(req,res)=>{
     try {
         const user_id = req.params['id'] ;
         const user = await User.findById({_id:user_id});

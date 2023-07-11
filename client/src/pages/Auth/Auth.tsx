@@ -28,6 +28,7 @@ const Auth = () => {
     e.preventDefault();
     if(isSignup){
       if(!(formData.password === formData.confirmpassword)){
+        alert("Password and Confirm Password Should be same");
         console.log("Password and Confirm Password Should be same");
         return ;
       }
@@ -49,11 +50,17 @@ const Auth = () => {
         const data = await res.json();
         console.log(data);
         localStorage.setItem("token" , data.token)
-        if(role==="Student"){
-          window.location.replace(`http://localhost:5173/studentdashboard`);
-        }else{
-          window.location.replace('http://localhost:5173/dashboard')
+        if(!data.sucess){
+          alert(data.message);
         }
+        if(data.sucess){
+          if(role==="Student"){
+            window.location.replace(`http://localhost:5173/studentdashboard`);
+          }else{
+            window.location.replace('http://localhost:5173/dashboard')
+          }
+        }
+        
       }).catch(err=>{
         console.log(err);
       })
@@ -72,6 +79,9 @@ const Auth = () => {
         const data = await res.json();
         console.log(data);
         localStorage.setItem("token" , data.token)
+        if(!data.sucess){
+          alert(data.message);
+        }
         if(data.sucess){
           if(data.user.role==="Student"){
             window.location.replace(`http://localhost:5173/studentdashboard`);
