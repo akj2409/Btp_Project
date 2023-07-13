@@ -10,10 +10,18 @@ const Dashbar = () => {
   const func =()=>{
     navigate("/profile");
   }
+
+  const logout = ()=>{
+    window.history.pushState(null,'','/');
+    localStorage.clear();
+    navigate('/');
+  }
   let x=window.location.href;
   x=x.slice(-7);
   useEffect(()=>{
     if(x=="profile"){
+      settoggle(false);
+    }else if(x=="ectform"){
       settoggle(false);
     }else{
       settoggle(true);
@@ -26,7 +34,7 @@ const Dashbar = () => {
         <h3 className="font-manrope text-black font-extrabold text-xl s:text-xl">Aviate-freelance</h3>
         <div className='flex items-center gap-2'>
           {toggle && (<IoMdContact onClick={func} size={35} color='#4923B4'/>  )}
-          <button onClick={func} className=" flex items-center gap-1 btn-1 s:m-[.4rem]" type="button" ><HiOutlineLogout size={20}/>Sign Out </button>
+          <button onClick={logout} className=" flex items-center gap-1 btn-1 s:m-[.4rem]" type="button" ><HiOutlineLogout size={20}/>Sign Out </button>
         </div>
     </div>
   )

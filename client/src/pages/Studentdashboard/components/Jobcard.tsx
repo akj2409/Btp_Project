@@ -1,11 +1,21 @@
 import React,{useState} from 'react'
 import {IoIosArrowUp,IoIosArrowDown} from 'react-icons/io';
 import { FaRupeeSign } from "react-icons/fa";
+
 const applyurl = 'http://localhost:5000/jobs/apply';
 const revokejoburl = 'http://localhost:5000/jobs/revoke/'
 
-const Jobcard = ({id,title,skillset,amount,description , property , func}:any) => {
+const Jobcard = ({id,title,skillset,amount,description,category, property , func}:any) => {
     const token = localStorage.getItem('token');
+    const [applymodel, setapplymodel] = useState(false); 
+    const [applymsg, setapplymsg] = useState("");
+
+    if(applymodel) {
+      document.body.classList.add('active-model')
+    }else{
+      document.body.classList.remove('active-model')
+    }
+    
     const applyforjob= async()=>{
       const object = {
         "job_id":id
@@ -19,7 +29,9 @@ const Jobcard = ({id,title,skillset,amount,description , property , func}:any) =
       body:JSON.stringify(object)
       }).then(async(res)=>{
         const data = await res.json();
-        alert(data.message);
+        // alert(data.message);
+        setapplymsg(data.message);
+        setapplymodel(true);
         if(data.sucess){
           func();
         }
@@ -37,7 +49,8 @@ const Jobcard = ({id,title,skillset,amount,description , property , func}:any) =
       }
       }).then(async(res)=>{
         const data = await res.json();
-        alert(data.message);
+
+        
         if(data.sucess){
           func(true);
         }
@@ -52,6 +65,7 @@ const Jobcard = ({id,title,skillset,amount,description , property , func}:any) =
     <div className='flex flex-col justify-center items-start gap-2'>
         <h1 className='font-manrope text-black font-bold'>{title}</h1>
         <p className=" flex items-center font-manrope text-grey text-xs">Budget:<FaRupeeSign size={10}/>{amount}</p>
+        <p className=" flex items-center font-manrope text-grey text-xs">Category:{category}</p>
         <div className="flex flex-row flex-wrap justify-start items-start gap-2">
           {skillset.map((skill: any,i: any)=>(
             <div key={i} className="bg-[#cec1f3] flex justify-center items-center rounded-xl px-2.5 py-1">
@@ -82,6 +96,15 @@ const Jobcard = ({id,title,skillset,amount,description , property , func}:any) =
       </div>   
 
     )}  
+    {applymodel && <div className='z-[100] fixed inset-0 bg-black bg-opacity-25 backdrop-blur-[1px] flex justify-center items-center shadow-lg'>
+      <div className='w-100px'>
+        <div className='bg-white flex flex-col justify-center items-center gap-8 p-4 rounded-lg'>
+         <p className='mt-2 font-manrope text-black font-bold'>{applymsg}</p>
+         <button className='btn-3 ' onClick={()=>setapplymodel(false)}>OK</button>
+        </div>
+      </div>
+    </div>}
+   
  </div>
   )
 }

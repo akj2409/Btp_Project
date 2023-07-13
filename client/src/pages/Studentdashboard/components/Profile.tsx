@@ -44,6 +44,10 @@ const Profile = () => {
   const [image, setimage] = useState("");
   
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+  if(!token){
+    navigate('/');
+  }
   const handleimageclick = () => {
     inputRef.current.click();
   };
@@ -97,7 +101,6 @@ const Profile = () => {
       "linkedin":linkedinlink,
       "bio":bio
     }
-    const token = localStorage.getItem('token');
     await fetch(saveurl , {
       method:'POST',
       headers:{
@@ -116,7 +119,6 @@ const Profile = () => {
   }
 
   const fetchuser = async()=>{
-    const token = localStorage.getItem('token');
     await fetch(fetchurl , {
       method:'GET',
       headers:{
@@ -134,7 +136,6 @@ const Profile = () => {
   }
 
   const fetchDetails = async()=>{
-    const token = localStorage.getItem('token');
     await fetch(fetchDetailsurl , {
       method:'GET',
       headers:{
@@ -154,7 +155,6 @@ const Profile = () => {
   }
 
   const fetchProjects = async()=>{
-    const token = localStorage.getItem('token');
 
     await fetch(fetchprojectsurl , {
       method:'GET',

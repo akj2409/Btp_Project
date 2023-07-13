@@ -51,7 +51,13 @@ const Auth = () => {
         console.log(data);
         localStorage.setItem("token" , data.token)
         if(!data.sucess){
-          alert(data.message);
+          if(data.message){
+             alert(data.message);
+          }else if(data.errors){
+            alert(data.errors[0].msg);
+          }else {
+          alert("server Error");
+          }
         }
         if(data.sucess){
           if(role==="Student"){
@@ -80,7 +86,7 @@ const Auth = () => {
         console.log(data);
         localStorage.setItem("token" , data.token)
         if(!data.sucess){
-          alert(data.message);
+            alert(data.message);
         }
         if(data.sucess){
           if(data.user.role==="Student"){

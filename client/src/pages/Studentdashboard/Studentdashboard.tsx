@@ -1,5 +1,6 @@
 import React, { useEffect,useState } from "react";
 import Jobcard from "./components/Jobcard";
+import { useNavigate } from "react-router-dom";
 import Dashbar from "./components/Dashbar";
 import {MenuItem,Select,InputLabel, FormControl} from "@mui/material";
 import { Theme, useTheme } from "@mui/material";
@@ -37,9 +38,10 @@ function getStyles( theme: Theme) {
   };
 }
 
-const jobcards: {title: string,skillset: string[],amount: string,id:string,description: string}[] = [] ;
-const appliedjobcards: {title: string,skillset: string[],amount: string,id:string,description: string}[]=[];
+const jobcards: {title: string,skillset: string[],category: string,amount: string,id:string,description: string}[] = [] ;
+const appliedjobcards: {title: string,skillset: string[],category: string,amount: string,id:string,description: string}[]=[];
 const Studentdashboard = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const [category, setcategory] = useState("");
   const handlecategory = (e: any) => {
@@ -47,6 +49,9 @@ const Studentdashboard = () => {
   }
 
   const token = localStorage.getItem('token');
+  if(!token){
+    navigate('/');
+  }
   
   const [jobdata,setjobdata] = useState([]);
   const [appliedjobdata,setappliedjobdata] = useState([]);
@@ -64,13 +69,14 @@ const Studentdashboard = () => {
       setjobdata(data.jobs);
       let arr = data.jobs ;
           jobcards.length = 0;
-          arr.forEach((element: { title: any; skills: any; budget: any; _id: any; description: any }) => {
+          arr.forEach((element: { title: any; skills: any; category: any; budget: any; _id: any; description: any }) => {
             const object = {
               title: element.title,
               skillset: element.skills,
               amount: element.budget,
               id:element._id,
-              description:element.description
+              description:element.description,
+              category: element.category
             }
             jobcards.push(object);
           });
@@ -92,13 +98,14 @@ const Studentdashboard = () => {
       setappliedjobdata(data.jobs);
       let arr = data.jobs ;
       appliedjobcards.length = 0;
-      arr.forEach((element: { title: any; skills: any; budget: any; _id: any; description: any }) => {
+      arr.forEach((element: { title: any; skills: any; category: any,budget: any; _id: any; description: any }) => {
         const object = {
           title: element.title,
           skillset: element.skills,
           amount: element.budget,
           id:element._id,
-          description:element.description
+          description:element.description,
+          category: element.category
         }
         appliedjobcards.push(object);
       });
@@ -127,13 +134,14 @@ const fetchcategorybyjob = async(category: string)=>{
     setjobdata(data.jobs);
     let arr = data.jobs ;
         jobcards.length = 0;
-        arr.forEach((element: { title: any; skills: any; budget: any; _id: any; description: any }) => {
+        arr.forEach((element: { title: any; skills: any; category: any; budget: any; _id: any; description: any }) => {
           const object = {
             title: element.title,
             skillset: element.skills,
             amount: element.budget,
             id:element._id,
-            description:element.description
+            description:element.description,
+            category: element.category
           }
           jobcards.push(object);
         });
@@ -174,6 +182,7 @@ useEffect(()=>{
             skillset={jobcard.skillset}
             amount={jobcard.amount}
             description={jobcard.description}
+            category={jobcard.category}
             property={false}
             func={func}
           /> 
@@ -221,6 +230,7 @@ useEffect(()=>{
             skillset={jobcard.skillset}
             amount={jobcard.amount}
             description={jobcard.description}
+            category={jobcard.category}
             property={true}
             func={func}
           />

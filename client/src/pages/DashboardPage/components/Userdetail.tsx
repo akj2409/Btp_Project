@@ -41,7 +41,16 @@ const Userdetail = () => {
   const inputRef = useRef() as React.MutableRefObject<HTMLImageElement>;
   const [image, setimage] = useState("");
   
- 
+  // const handleimageclick = () => {
+  //   inputRef.current.click();
+  // };
+
+  // const handleimagechange = (e: { target: { files: any[] } }) => {
+  //   const file = e.target.files[0];
+  //   setimage(file);
+  //   console.log(image);
+  //   console.log(typeof(image));
+  // };
    
 
   const [name,setname] = useState("");
@@ -144,7 +153,7 @@ const Userdetail = () => {
               <div className="flex flex-col justify-center items-center">
                 <div
                   className="flex justify-center items-center h-[108px] w-[108px]"
-                  
+                  // onClick={handleimageclick}
                 >
                   {image ? (
                     <img
@@ -236,7 +245,12 @@ const Userdetail = () => {
                 </div>
                 <div className="hidden">
                   {" "}
-                  
+                  {/* <input
+                    type="file"
+                    ref={inputRef}
+                    onChange={handleimagechange}
+                  />
+                   */}
                 </div>
                 
               </form>
@@ -248,7 +262,7 @@ const Userdetail = () => {
                 <AiFillPlusCircle size="30px" color="#4923B4" />
               </button>
             </div> */}
-            <div className="flex flex-wrap justify-start">
+            <div className="flex w-full flex-wrap justify-start">
                 {false ? (
                   <div className="h-screen justify-center items-center text-5xl italic text-teal-600">
                     Loading

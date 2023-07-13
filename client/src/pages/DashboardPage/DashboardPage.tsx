@@ -13,12 +13,12 @@ const AllJoburl = 'http://localhost:5000/jobs/jobs_of_client'
 const deleteurl = 'http://localhost:5000/jobs/deletejob/';
 const fetchuserdetailsurl = 'http://localhost:5000/users/details';
 
-const jobcards: {title: string,skillset: string[],amount: string,id:string}[] = [] ;
+const jobcards: {title: string,skillset: string[],category: string,amount: string,id:string}[] = [] ;
 
 const DashboardPage = () => {
 
-  const token = localStorage.getItem('token');
   const navigate = useNavigate();
+  
     // const [jobcards, loading] = useFetch<Product[]>("/dummy/jobs.json");
   const[job,setjob] = useState("0"); 
   const[jobdata, setjobdata] = useState([]); 
@@ -26,6 +26,12 @@ const DashboardPage = () => {
   const [lastname,setlastname] = useState("");
   const [email,setemail] = useState("");
 
+  const token = localStorage.getItem('token');
+  console.log(token);
+  if(token===null){
+    console.log("token is nULL")
+     navigate('/');
+  }
 
     const fetchuser = async()=>{
       await fetch(fetchuserdetailsurl , {
@@ -57,12 +63,13 @@ const DashboardPage = () => {
           setjobdata(data.jobs);
           let arr = data.jobs ;
           jobcards.length = 0;
-          arr.forEach((element: { title: any; skills: any; budget: any; _id: any; }) => {
+          arr.forEach((element: { title: any; skills: any; category: any; budget: any; _id: any; }) => {
             const object = {
               title: element.title,
               skillset: element.skills,
               amount: element.budget,
-              id:element._id
+              id:element._id,
+              category: element.category
             }
             jobcards.push(object);
           });
@@ -99,20 +106,21 @@ const DashboardPage = () => {
       <div className="h-screen bg-background">
       <div className=" p-8  bg-background">
         <div className="flex flex-wrap flex-row justify-center items-start gap-8">
-          <div className="flex-1 flex max-w-xs max-h-32 justify-center items-start flex-col gap-4 m-4 p-4 rounded-[10px] bg-foreground shadow-[0px_7px_30px_0px_rgba(90,114,123,0.11)]">
-            <div className="flex flex-row w-full justify-between items-center ">
-              <h2 className="text-xl font-medium">{`${firstname} ${lastname}`}</h2>
+          <div className="flex-1 flex max-w-xs max-h-32 justify-center items-start flex-col gap-10 m-4 p-4 rounded-[10px] bg-white bg-no-repeat bg-cover bg-center bg-[url('/images/welcome-bg.svg')] shadow-[0px_7px_30px_0px_rgba(90,114,123,0.11)]">
+            <div className="flex flex-col w-full justify-center items-start ">
+              <h1 className=" font-manrope text-xl font-extrabold">Welcome</h1>
+              <h2 className=" font-manrope text-xl font-semibold">{`${firstname} ${lastname}`}</h2>
              
-              <Avatar sx={{ width: '50px', height: '50px',backgroundColor: "#E878CF" }} alt={firstname} src="." />
+             
             </div>
-            <h1 className="text-sm font-semibold text-grey flex items-center mt-2 ">
+            <h1 className="font-manrope text-sm font-semibold text-grey flex items-center mt-2 ">
       
               {email}
             </h1>
           </div>
           <div className="flex-1  max-w-xs max-h-32 flex justify-center items-start flex-col gap-4 m-4 p-4 rounded-[10px] bg-foreground shadow-[0px_7px_30px_0px_rgba(90,114,123,0.11)]">
             <div className="flex flex-row w-full justify-between items-center ">
-              <h2 className="text-xl font-medium">Jobs</h2>
+              <h2 className="text-xl font-bold font-manrope">Jobs</h2>
               <AiFillDropboxCircle size="60px" color="#4923B4" />
             </div>
             <h1 className="text-3xl font-semibold">{job}</h1>
@@ -124,7 +132,7 @@ const DashboardPage = () => {
           </div>
           <div className="flex-1 flex max-w-xs justify-center items-start flex-col gap-4 m-4 p-4 rounded-[10px] bg-foreground shadow-[0px_7px_30px_0px_rgba(90,114,123,0.11)]">
             <div className="flex flex-row w-full justify-between items-center gap-1">
-              <h2 className="text-xl font-medium">Post Job</h2>
+              <h2 className="text-xl font-bold font-manrope">Post Job</h2>
               <button onClick={() => navigate("/jobform")}>
                 {" "}
                 <AiFillPlusCircle size="60px" color="#4923B4" />
@@ -152,6 +160,7 @@ const DashboardPage = () => {
                   title={jobcard.title}
                   skillset={jobcard.skillset}
                   amount={jobcard.amount}
+                  category={jobcard.category}
                   deleteFunc={deleteFunc}
                   //   description={jobcard.description}
                 />

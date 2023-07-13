@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { Theme, useTheme } from "@mui/material";
 import { FaRupeeSign } from "react-icons/fa";
-import useFetch from "../../../hooks/useFetch";
+
 
 const postjoburl = 'http://localhost:5000/jobs/create_job';
 
@@ -34,6 +34,18 @@ const skills = [
   "Mongo DB",
   "Node.Js",
   "Django",
+  "Swift",
+  "Java",
+  "Kotlin",
+  "React Native",
+  "Flutter",
+  "Python",
+  "Tensorflow",
+  "PyTorch",
+  "OpenCV",
+  "Scikit-Learn",
+  "Numpy",
+  "Pandas"
 ];
 
 const categorys = [

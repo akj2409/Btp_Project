@@ -6,7 +6,7 @@ import { FaRupeeSign } from "react-icons/fa";
 
 
 
-const Jobcard = ({ id,title, skillset, amount , deleteFunc}: any) => {
+const Jobcard = ({ id,title, skillset, amount ,category, deleteFunc}: any) => {
   const navigate = useNavigate();
 
   const func=()=>{
@@ -19,6 +19,7 @@ const Jobcard = ({ id,title, skillset, amount , deleteFunc}: any) => {
       <div className="flex flex-col justify-center items-start gap-2">
         <h1 className="font-manrope text-black font-semibold">{title}</h1>
         <p className=" flex items-center font-manrope text-grey text-xs">Budget:<FaRupeeSign size={10}/>{amount}</p>
+        <p className=" flex items-center font-manrope text-grey text-xs">Category:{category}</p>
         <div className="flex flex-row  flex-wrap justify-start items-start gap-2">
           {skillset.map((skill: any,i: any)=>(
             <div key={i} className="bg-[#cec1f3] flex justify-center items-center rounded-xl px-2.5 py-1">
