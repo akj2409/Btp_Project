@@ -15,7 +15,7 @@ const Jobcard = ({ id,title, skillset, amount ,category, deleteFunc}: any) => {
   }
 
   return (
-    <div className=" flex w-4/5 justify-between relative z-0 flex-row gap-4 m-4 p-4 rounded-[10px] bg-foreground hover:shadow-[0px_7px_30px_0px_rgba(90,114,123,0.11)] l:flex-col l:w-full xm:w-full ">
+    <div className=" flex w-4/5 justify-between relative z-0 flex-row gap-4 m-4 p-4 rounded-[10px] bg-foreground  duration-300 hover:-translate-y-1 hover:shadow-[0px_7px_30px_0px_rgba(90,114,123,0.11)] l:flex-col l:w-full xm:w-full ">
       <div className="flex flex-col justify-center items-start gap-2">
         <h1 className="font-manrope text-black font-semibold">{title}</h1>
         <p className=" flex items-center font-manrope text-grey text-xs">Budget:<FaRupeeSign size={10}/>{amount}</p>

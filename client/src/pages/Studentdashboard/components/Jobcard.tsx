@@ -1,20 +1,17 @@
 import React,{useState} from 'react'
 import {IoIosArrowUp,IoIosArrowDown} from 'react-icons/io';
 import { FaRupeeSign } from "react-icons/fa";
+import {BsPatchCheck} from "react-icons/bs";
+import {TbAlertCircle} from "react-icons/tb";
+import useModal from "../../../hooks/useModal";
+
 
 const applyurl = 'http://localhost:5000/jobs/apply';
 const revokejoburl = 'http://localhost:5000/jobs/revoke/'
 
 const Jobcard = ({id,title,skillset,amount,description,category, property , func}:any) => {
     const token = localStorage.getItem('token');
-    const [applymodel, setapplymodel] = useState(false); 
-    const [applymsg, setapplymsg] = useState("");
-
-    if(applymodel) {
-      document.body.classList.add('active-model')
-    }else{
-      document.body.classList.remove('active-model')
-    }
+  
     
     const applyforjob= async()=>{
       const object = {
@@ -29,9 +26,10 @@ const Jobcard = ({id,title,skillset,amount,description,category, property , func
       body:JSON.stringify(object)
       }).then(async(res)=>{
         const data = await res.json();
-        // alert(data.message);
-        setapplymsg(data.message);
-        setapplymodel(true);
+      
+        
+        modal.show(<JobcardModal msg={data.message}/>);
+        
         if(data.sucess){
           func();
         }
@@ -39,6 +37,10 @@ const Jobcard = ({id,title,skillset,amount,description,category, property , func
         console.log(err);
       })
     }
+    
+    const modal = useModal()
+
+    
 
     const revokejob = async()=>{
       await fetch(revokejoburl+id ,{
@@ -60,7 +62,7 @@ const Jobcard = ({id,title,skillset,amount,description,category, property , func
     }
     const [toggledetail,settoggledetail] = useState(false);
   return (
-    <div  className=' flex w-1/2 justify-start gap-4 flex-col m-4 p-4 rounded-[10px] border border-gray bg-foreground  hover:shadow-[0px_7px_30px_0px_rgba(90,114,123,0.11)]  l:w-4/5 xm:w-4/5 '>
+    <div  className='flex w-1/2 justify-start gap-4 flex-col m-4 p-4 rounded-[10px] border border-gray bg-foreground duration-300 hover:-translate-y-1 hover:shadow-[0px_7px_30px_0px_rgba(90,114,123,0.11)]  l:w-4/5 xm:w-4/5 '>
     <div className='flex flex-row justify-between gap-4 xm:flex-col '>
     <div className='flex flex-col justify-center items-start gap-2'>
         <h1 className='font-manrope text-black font-bold'>{title}</h1>
@@ -88,7 +90,7 @@ const Jobcard = ({id,title,skillset,amount,description,category, property , func
     </div>
     </div>    
     {toggledetail && (
-      <div>
+      <div className={`transition duration-500 `}>
          <div className=' flex flex-col justify-center gap-1 items-start'>
             <h1 className='font-manrope font-bold text-black text-base'>Description</h1>
             <p className='font-manrope text-grey text-sm'>{description}</p>
@@ -96,17 +98,24 @@ const Jobcard = ({id,title,skillset,amount,description,category, property , func
       </div>   
 
     )}  
-    {applymodel && <div className='z-[100] fixed inset-0 bg-black bg-opacity-25 backdrop-blur-[1px] flex justify-center items-center shadow-lg'>
-      <div className='w-100px'>
-        <div className='bg-white flex flex-col justify-center items-center gap-8 p-4 rounded-lg'>
-         <p className='mt-2 font-manrope text-black font-bold'>{applymsg}</p>
-         <button className='btn-3 ' onClick={()=>setapplymodel(false)}>OK</button>
-        </div>
-      </div>
-    </div>}
-   
  </div>
+ 
   )
+};
+function JobcardModal({msg}:any) {
+
+  const modal = useModal()
+
+  return <div className='w-100px shadow-lg'>
+  <div className='bg-white shadow-lg flex flex-col justify-center items-center gap-8 p-4 rounded-lg'>
+   <div className="flex justify-center items-center flex-col gap-1">
+     {msg === "Already Rregistered For This Job" ? (<TbAlertCircle size={'50px'} color="#f41818"/>)
+    : (<BsPatchCheck size={'50px'} color="#4adf52"/>)}
+   <p className='mt-2 font-manrope text-black font-bold'>{msg}</p> 
+   </div>
+    <button className='btn-3 ' onClick={()=>modal.hide()}>OK</button> 
+  </div>
+</div>
 }
 
 export default Jobcard

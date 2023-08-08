@@ -17,7 +17,7 @@ export const save_Details = async(req,res)=>{
             }
            await details.updateOne(object)
 
-           return res.status(200).json({sucess:true,message:"Details Updated"});
+           return res.status(200).json({sucess:true,message:"Details Updated Successfully"});
         }
         await UserDetail.create({
             mobile_no:mobile,

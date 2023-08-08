@@ -8,7 +8,8 @@
   }
 
   body {
-    @apply bg-[#fff];
+    @apply bg-[#ffff];
+    overflow: overlay
   }
 }
 
@@ -28,7 +29,7 @@
 
 @layer components {
   .btn-1 {
-    @apply bg-gradient-to-r from-[#4923B4] to-[#E878CF] font-manrope text-white font-medium rounded text-base  cursor-pointer mx-[.5rem] px-4 py-[.5rem] outline-none border-none hover:from-[#4217b7] hover:to-[#de56c1];
+    @apply bg-herogradient font-manrope text-white font-medium rounded text-base  cursor-pointer mx-[.5rem] px-4 py-[.5rem] outline-none border-none hover:from-[#4217b7] hover:to-[#de56c1];
   }
   /* #4923B4 */
   .btn-2 {

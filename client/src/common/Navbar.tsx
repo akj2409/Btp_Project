@@ -21,14 +21,14 @@ const Navbar = () => {
           <h3 className="font-manrope text-black font-extrabold text-2xl s:text-xl">Aviate-freelance</h3>
         </div>
         <div className="flex flex-row l:hidden">
-          <p className="p-style"><a onClick={() => navigate("/")}>Home</a></p>
-          <p className="p-style"><a onClick={() => navigate("/about")}>About</a></p>
-          <p className="p-style"><a href="#contact">Contact</a></p>
-          <p className="p-style"><a href="#help&support">Help&Support</a></p>
+          <p className="p-style"><a onClick={()=> navigate("/")}>Home</a></p>
+          <p className="p-style"><a onClick={()=> navigate("/about")}>About Us</a></p>
+          <p className="p-style"><a onClick={()=> navigate("/contact")}>Contact Us</a></p>
+          {/* <p className="p-style"><a onClick={()=> navigate("/help")}>Help&Support</a></p> */}
         </div>
       </div>
       <div className="flex justify-end items-center  s:hidden">
-        <button onClick={() => navigate("/auth")} className="btn-1" type="button">Sign In / Sign Up</button>
+        <button onClick={() => navigate("/auth")} className="btn-1 duration-500 hover:scale-105 " type="button">Sign In / Sign Up</button>
       </div>
       <div className="ml-4 hidden relative l:flex">
         <RiMenu3Line className='cursor-pointer' color="#060606" size={27} onClick={() => settogglemenu(true)}/>
@@ -36,13 +36,13 @@ const Navbar = () => {
           <div className=" transition duration-500 ease-linear flex w-full h-[60vh] justify-center items-center flex-col text-center bg-white p-8 fixed top-0 right-0 shadow-xl slide-bottom">
             <RiCloseLine color="#060606" className="cursor-pointer absolute top-9 right-8" size={27} onClick={() => settogglemenu(false)}/>
             <div>
-              <p className="p-style"><a onClick={homeandclose}>Home</a></p>
-              <p className="p-style"><a onClick={aboutandclose}>About</a></p>
-              <p className="p-style"><a href="#contact">Contact</a></p>
-              <p className="p-style"><a href="#help&support">Help&Support</a></p>
+              <p className="p-style"><a onClick={()=> navigate("/")}>Home</a></p>
+              <p className="p-style"><a onClick={()=> navigate("/about")}>About Us</a></p>
+              <p className="p-style"><a onClick={()=> navigate("/contact")}>Contact Us</a></p>
+              {/* <p className="p-style"><a onClick={()=> navigate("/help")}>Help&Support</a></p> */}
             </div>
             <div className="hidden s:block">
-              <button onClick={() => navigate("/auth")} className="btn-1 s:m-[.4rem]" type="button" > Sign In / Sign up </button>
+              <button onClick={() => navigate("/auth")} className="btn-1 duration-500 hover:scale-105 s:m-[.4rem]" type="button" > Sign In / Sign up </button>
             </div>
           </div>
         )}

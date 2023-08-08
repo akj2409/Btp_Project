@@ -2,14 +2,38 @@ import React, { useEffect,useState } from "react";
 import Jobcard from "./components/Jobcard";
 import { useNavigate } from "react-router-dom";
 import Dashbar from "./components/Dashbar";
-import {MenuItem,Select,InputLabel, FormControl} from "@mui/material";
+import {MenuItem,Select,InputLabel,SelectChangeEvent, FormControl} from "@mui/material";
 import { Theme, useTheme } from "@mui/material";
 
 const alljobsUrl = 'http://localhost:5000/jobs/alljobs';
 const applied_jobs_url = 'http://localhost:5000/jobs/applied_job';
 const categorywiseurl = 'http://localhost:5000/jobs/filterbycategory'
 
-
+const skills = [
+  "HTML",
+  "CSS",
+  "Js",
+  "Next.Js",
+  "React.Js",
+  "MUI",
+  "PHP",
+  "Posgrey SQL",
+  "Mongo DB",
+  "Node.Js",
+  "Django",
+  "Swift",
+  "Java",
+  "Kotlin",
+  "React Native",
+  "Flutter",
+  "Python",
+  "Tensorflow",
+  "PyTorch",
+  "OpenCV",
+  "Scikit-Learn",
+  "Numpy",
+  "Pandas"
+];
 const categorys = [
   "All Jobs",
   "Web App",
@@ -44,9 +68,29 @@ const Studentdashboard = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const [category, setcategory] = useState("");
+  const [skillset, setskillset] = useState<string[]>([]);
+
   const handlecategory = (e: any) => {
     setcategory(e.target.value);
   }
+
+  const handleskill = (event: SelectChangeEvent<typeof skillset>) => {
+    const {
+      target: { value },
+    } = event;
+    console.log(value);
+    setskillset(typeof value === "string" ? value.split(",") : value);
+    // var abc = "";
+    // for (var i = 0; i < value.length; i++) {
+    //   if (i == value.length - 1) {
+    //     abc = abc + value[i];
+    //   } else {
+    //     abc = abc + value[i] + ", ";
+    //   }
+    // }
+    // // console.log(abc);
+    // setabc(abc);
+  };
 
   const token = localStorage.getItem('token');
   if(!token){
@@ -192,10 +236,11 @@ useEffect(()=>{
       </div>
       <hr></hr> 
       <div className="px-24 py-10 bg-background flex flex-col justify-center m:px-16 s:px-8">
-        <div className="flex flex-row justify-center gap-16 items-center l:flex-col l:gap-2 ">
+        <div className="flex flex-col justify-center gap-2 items-center  ">
         <h1 className="font-manrope text-black text-center font-extrabold p-4  text-3xl vs:text-xl">
           Best Matches Jobs For You
         </h1>
+        <div className="flex flex-row gap-2 justify-center items-center xm:flex-col">
         <FormControl sx={{minWidth: 160}} size="small">
           <InputLabel id="category-label">Select Category</InputLabel>
             <Select
@@ -220,6 +265,30 @@ useEffect(()=>{
                   ))}
             </Select>
         </FormControl>
+        <FormControl sx={{minWidth: 260}} size="small">
+                <InputLabel id="skill-label"> Select Skills</InputLabel>
+                <Select
+                  labelId="skill-label"
+                  id="skills"
+                  multiple
+                  fullWidth
+                  label="Select Skills"
+                  value={skillset}
+                  onChange={handleskill}
+                  MenuProps={MenuProps}
+                >
+                  {skills.map((skill) => (
+                    <MenuItem
+                      key={skill}
+                      value={skill}
+                      style={getStyles(theme)}
+                    >
+                      {skill}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+        </div>
         </div>
         <div className="flex  flex-col items-center  justify-center">
           { jobcards.map((jobcard, i) => 
