@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Dashbar from "./Dashbar";
 import { FaRupeeSign } from "react-icons/fa";
-import { BsChatLeftTextFill } from "react-icons/bs";
+import { useLocation } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import {
   Table,
@@ -13,22 +13,23 @@ import {
   Avatar,
   Grid,
 } from "@mui/material";
-import { useParams } from "react-router-dom";
 
 function createData(
   rank: number,
-  name: string,
+  firstname: string,
+  lastname: string,
   bio: string,
   email: string,
   mobile_no: string,
   id:string
 ) {
-  return { rank, name, bio, email, mobile_no ,id};
+  return { rank, firstname, lastname, bio, email, mobile_no ,id};
 }
 
 
 const rows :{rank: number,
-  name: string,
+  firstname: string,
+  lastname: string,
   bio: string,
   email: string,
   mobile_no: string,
@@ -38,16 +39,20 @@ const fetchuserbyidurl = 'http://localhost:5000/users/user_by_id/'
 const fetchdetailsurl = 'http://localhost:5000/saveDetails/getDetailsbyid/'
 
 
-const applied_users: {name: string,bio: string,email: string,mobile_no:string , _id:string}[] = [] ;
+const applied_users: {rank: number, firstname: string,lastname: string,bio: string,email: string,mobile_no:string , id:string}[] = [] ;
 
 const Jobdetail = () => {
   
-  const [jobdetaildata,setjobdetaildata] = useState({title:'' , id:'' , applied_user:'' , description:'', skills:'' , budget:''});
+  const [jobdetaildata,setjobdetaildata] = useState({title:'' , id:'' , applied_user:'' , description:'', skills:'' , budget:'', category:''});
   const [userstate , setuserstate] = useState({})
-
+  const locatio=useLocation();
+  const [array,setArray]=useState([])
+  const navigate = useNavigate();
   let size: number ;
   const id = localStorage.getItem('id');
   // console.log(id);
+ 
+  console.log(localStorage.getItem('reload'));
 let applied_users_id ;
   const fetchjob = async()=>{
     await fetch(fetchjoburl+id , {
@@ -57,7 +62,7 @@ let applied_users_id ;
       }
     }).then(async(res)=>{
       const data = await res.json();
-      setjobdetaildata({title:data.job.title , id:data.job.id ,applied_user:data.job.applied_user , description:data.job.description , skills:data.job.skills ,budget:data.job.budget});
+      setjobdetaildata({title:data.job.title , id:data.job.id ,applied_user:data.job.applied_user , description:data.job.description , skills:data.job.skills ,budget:data.job.budget, category:data.job.category});
       // console.log(data.job);
       applied_users_id = data.job.applied_user ;
       applied_users.length=0;
@@ -73,8 +78,10 @@ let applied_users_id ;
 
 
   const getapplieduser = async(id:string)=>{
-     const object: {name: string,bio: string,email: string,mobile_no:string , _id:string} = {
-       name: "",
+
+     const object: {firstname: string,lastname: string,bio: string,email: string,mobile_no:string , _id:string} = {
+       firstname: "",
+       lastname: "",
        bio: "",
        email: "",
        mobile_no: "",
@@ -87,8 +94,11 @@ let applied_users_id ;
       }
       }).then(async(res)=>{
         const data = await res.json();
-        object.name = data.user.first_name ;
+        console.log(data)
+        object.firstname = data.user.first_name ;
+        object.lastname = data.user.last_name;
         object.email = data.user.email ;
+
         await fetch(fetchdetailsurl+id,{
           method:'GET',
         headers:{
@@ -102,10 +112,48 @@ let applied_users_id ;
           }
 
           if(size-1 > rows.length ){
-            rows.push(createData(rows.length+1 , object.name ,object.bio ,object.email , object.mobile_no , object._id))
-            console.log(rows);
+            rows.push(createData(rows.length+1 , object.firstname, object.lastname ,object.bio ,object.email , object.mobile_no , object._id))
+            // console.log(rows);
+            let myobj={
+              firstname: "",
+              lastname: "",
+              bio: "",
+              email: "",
+              mobile_no: "",
+              _id: id
+            }
+            myobj.firstname=object.firstname;
+            myobj.lastname=object.lastname;
+            myobj.bio=object.bio;
+            myobj.email=object.email;
+            myobj.mobile_no=object.mobile_no;
+            myobj._id=object._id;
+            console.log(myobj);
+            let newer=array;
+            let mymap=new Map()
+            let newest=[]
+            newer.push(myobj);
+            for(let i=0;i<newer.length;i++){
+              if(mymap.has(newer[i]._id)){
+
+              }else{
+                mymap.set(newer[i]._id,1);
+                newest.push(newer[i]);
+              }
+            }
+
+
+
+            
+            
+
+
+            setArray(newest);
+            console.log(array);
+            navigate('/jobdetail')
 
           }
+
           setuserstate(applied_users);
           // console.log(rows) 
                    
@@ -115,24 +163,38 @@ let applied_users_id ;
       })
   }
 
-
+  const [a,seta]=useState(0);
+  console.log(location.href);
+  
   useEffect(()=>{
+    console.log('hiiii');
     fetchjob();
   },[]);
+  useEffect(()=>{
+    console.log('heyeyyrydbcj')
+    console.log(localStorage.getItem('reload'));
+    console.log(localStorage.getItem('reload')=='1')
+    if(localStorage.getItem('reload')=='1'){
+      location.reload();
+      console.log('hiiiisdfghgfdsdfggfdsdfghgfdsdfg')
+      localStorage.setItem('reload','0');
+    }
+  });
+ 
 
-  console.log(rows);
-
-  const navigate = useNavigate();
+  
 
   const func=(id:any)=>{
     localStorage.setItem('user_id',id);
+    localStorage.setItem('reload','1');
     navigate(`/userdetail`)
   }
- 
+ console.log("length is ",rows.length);
   return (
     <>
       <Dashbar />
-      <div className="px-24 py-10 bg-background flex flex-col justify-center m:px-16 s:px-8">
+      <div className="h-screen bg-background">
+      <div className="px-24 py-10 bg-background  flex flex-col justify-center m:px-16 s:px-8">
         <h1 className="font-manrope text-black font-extrabold p-4 text-2xl">
           {" "}
           Job Details
@@ -155,6 +217,14 @@ let applied_users_id ;
                 <p className=" flex items-center font-manrope text-grey text-sm">
                   <FaRupeeSign />
                   {jobdetaildata.budget}
+                </p>
+              </div>
+              <div className="flex w-2/5 flex-col">
+                <h2 className="font-manrope font-bold text-black text-base">
+                  Category
+                </h2>
+                <p className="font-manrope text-grey text-sm">
+                  {jobdetaildata.category}
                 </p>
               </div>
             </div>
@@ -210,25 +280,26 @@ let applied_users_id ;
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((user,i) => (
+                
+                {array.map((user,i) => (
                   <TableRow 
-                    onClick={()=>func(user.id)}
+                    onClick={()=>func(user._id)}
                     key={i}
                   >
                     <TableCell>
-                      <h1 className="font-manrope text-grey">{user.rank}</h1>
+                      <h1 className="font-manrope text-grey">{i+1}</h1>
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-row gap-4 items-center ">
                         <div>
                           <Avatar
                             sx={{ backgroundColor: "#4923B4" }}
-                            alt={user.name}
+                            alt={user.firstname}
                             src="."
                           />
                         </div>
                         <div className="flex flex-col gap-1">
-                          <h1 className="font-bold font-manrope">{user.name}</h1>
+                          <h1 className="font-bold font-manrope">{`${user.firstname} ${user.lastname}`}</h1>
                           <h1 className="font-manrope text-grey">{user.bio}</h1>
                         </div>
                       </div>
@@ -250,6 +321,8 @@ let applied_users_id ;
             </Table>
           </TableContainer>
         </div> : <h1>No One Applied Yet</h1>}
+        
+      </div>
       </div>
     </>
   );

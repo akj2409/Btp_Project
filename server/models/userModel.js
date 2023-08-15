@@ -9,8 +9,6 @@ const UserSchema= new mongoose.Schema(
           },
           last_name:{
             type:String,
-            required:[true,'last Name is required'],
-            minlength:3,
           },
           role:{
             type:String,

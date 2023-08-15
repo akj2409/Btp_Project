@@ -23,7 +23,7 @@ export const Apply_job = async(req,res)=>{
         const applied = job.applied_user ;
 
         if(applied.includes(_id)){
-            return res.status(200).json({sucess:true , message:"Alreay Rregistered For This Job"})
+            return res.status(200).json({sucess:true , message:"Already Rregistered For This Job"})
         }
         
          await Jobs.updateOne({_id:job_id}, {$push: {applied_user:_id}});
@@ -77,7 +77,7 @@ export const deletejob = async(req,res)=>{
         const id = req.params['id'];
 
         await Jobs.deleteOne({_id:id});
-        res.status(200).json({sucess:true ,message:"Job Deleted "});
+        res.status(200).json({sucess:true ,message:"Job Deleted Successfully"});
     } catch (error) {
         res.status(500).json({sucess:false , message:"Server Error" , error:error});
         console.log(error);

@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import {BsGithub, BsLinkedin } from "react-icons/bs";
 import Dashbar from "./Dashbar";
-import { AiFillPlusCircle } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Projectcard from "./Projectcard";
 
 
@@ -41,7 +40,16 @@ const Userdetail = () => {
   const inputRef = useRef() as React.MutableRefObject<HTMLImageElement>;
   const [image, setimage] = useState("");
   
- 
+  // const handleimageclick = () => {
+  //   inputRef.current.click();
+  // };
+
+  // const handleimagechange = (e: { target: { files: any[] } }) => {
+  //   const file = e.target.files[0];
+  //   setimage(file);
+  //   console.log(image);
+  //   console.log(typeof(image));
+  // };
    
 
   const [name,setname] = useState("");
@@ -52,7 +60,7 @@ const Userdetail = () => {
   const [gitlink,setgitlink] = useState("");
   const [linkedinlink,setlinkedinlink] = useState("");
   const [projectdata,setprojectdata] = useState([]);
-  
+  localStorage.setItem('reload','1');
 
   
 
@@ -143,19 +151,19 @@ const Userdetail = () => {
             <div className="flex flex-col justify-center items-center p-5 w-full bg-foreground rounded-xl shadow-[0px_1px_20px_rgba(14,30,37,0.12)]">
               <div className="flex flex-col justify-center items-center">
                 <div
-                  className="flex justify-center items-center h-[108px] w-[108px]"
+                  className="flex justify-center p-[3px] bg-herogradient rounded-full items-center h-[108px] w-[108px]"
                   
                 >
                   {image ? (
                     <img
-                      className="w-full h-full rounded-full"
+                      className="w-full h-full border-4 border-foreground rounded-full"
                       src={URL.createObjectURL(image as any)}
                       alt="logo"
                     />
                   ) : (
                     <img
-                      className="w-full h-full rounded-full"
-                      src={"/images/profile.png"}
+                      className="w-full h-full border-4 border-foreground rounded-full"
+                      src={"/images/user.png"}
                       alt="logo"
                     />
                   )}
@@ -177,10 +185,13 @@ const Userdetail = () => {
                     <BsGithub />
                     <h5 className="ml-1 font-semibold">Github</h5>
                   </div>
+                  <Link target={"_blank"} to={gitlink}>
                   <input
-                    className="p-[.3rem] text-base text-center border rounded-md outline-none"
+                    className="p-[.3rem] text-base text-center border cursor-pointer rounded-md outline-none"
                     type="text" placeholder="Enter your github link"  value={gitlink}
                   />
+                  </Link>
+                 
                 </div>
                
                 <div className="flex flex-row justify-between items-center my-2 mx-0 w-full vs:flex-col vs:gap-2">
@@ -189,10 +200,11 @@ const Userdetail = () => {
                     <BsLinkedin />
                     <h5 className="ml-1 font-semibold">Linkedin</h5>
                   </div>
-                  <input
-                    className="p-[.3rem] text-base border text-center rounded-md outline-none"
+                  <Link target={"_blank"} to={linkedinlink}><input
+                    className="p-[.3rem] text-base border text-center cursor-pointer rounded-md outline-none"
                     type="text" placeholder="Enter your linkedin link" value={linkedinlink}
-                  />
+                  /></Link>
+                  
                 </div>
               </div>
             </div>
@@ -236,19 +248,19 @@ const Userdetail = () => {
                 </div>
                 <div className="hidden">
                   {" "}
-                  
+                  {/* <input
+                    type="file"
+                    ref={inputRef}
+                    onChange={handleimagechange}
+                  />
+                   */}
                 </div>
                 
               </form>
             </div>
             <h1 className="font-manrope text-2xl font-bold mb-2">Projects</h1>
-            {/* <div className="flex justify-center items-center  p-2 m-4 bg-foreground rounded-xl shadow-[0px_1px_20px_rgba(14,30,37,0.12)]">
-              <h2 className="text-sm font-medium">Add Project</h2>
-              <button onClick={() => navigate("/projectform")}>
-                <AiFillPlusCircle size="30px" color="#4923B4" />
-              </button>
-            </div> */}
-            <div className="flex flex-wrap justify-start">
+          
+            <div className="flex w-full flex-wrap justify-start">
                 {false ? (
                   <div className="h-screen justify-center items-center text-5xl italic text-teal-600">
                     Loading

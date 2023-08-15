@@ -6,7 +6,8 @@ const Jobform = () => {
   return (
     <>
     <Dashbar/>
-    <div className=" section_padding h-screen bg-background flex justify-center s:px-0 vm:px-0">
+    <div className=" section_padding h-screen bg-background flex flex-col justify-start s:px-0 vm:px-0">
+      {/* <h1 className=' w-[70%] m-auto font-manrope mb-4 text-xl font-bold text-black  xm:text-sm'>New Job</h1> */}
       <Stepperform/>
     </div>
     </>

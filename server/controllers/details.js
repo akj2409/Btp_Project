@@ -17,7 +17,7 @@ export const save_Details = async(req,res)=>{
             }
            await details.updateOne(object)
 
-           return res.status(200).json({sucess:true,message:"Details Updated"});
+           return res.status(200).json({sucess:true,message:"Details Updated Successfully"});
         }
         await UserDetail.create({
             mobile_no:mobile,
@@ -28,7 +28,7 @@ export const save_Details = async(req,res)=>{
             user_id:_id
         })
 
-        res.status(200).json({sucess:true, message:"Details Saved Sucessfully"});
+        res.status(200).json({sucess:true, message:"Details Saved Successfully"});
     } catch (error) {
         res.status(500).json({sucess:false , message:"Server Error" , error});
         console.log(error);

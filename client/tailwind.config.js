@@ -40,6 +40,9 @@ export default {
         roboto : '"Roboto", sans-serif',
         manrope: '"Manrope", sans-serif',
       },
+      backgroundImage:{
+          herogradient : "linear-gradient(103.22deg, #4923B4 -13.86%, #E878CF 99.55%)",
+      },
     },
   },
   plugins: [],

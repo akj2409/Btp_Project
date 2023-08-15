@@ -6,9 +6,8 @@ const router = express.Router();
 
 router.post('/newuser' ,[
     body('first_name' , 'First name should be atleast 3 character').isLength({ min: 3 }),
-    body('last_name' , 'Last name should be atleast 3 character').isLength({ min: 3 }),
     body('email' , 'Enter A valid email').isEmail(),
-    body('password' , 'Password must be atleast 5 Charecters').isLength({ min: 5 })
+    body('password' , 'Password must be atleast 5 Characters').isLength({ min: 5 })
 ], Register);
 
 router.post('/login' ,[

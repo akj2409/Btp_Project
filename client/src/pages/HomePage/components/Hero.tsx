@@ -5,15 +5,14 @@ import { useNavigate } from "react-router-dom";
 const Hero = () => {
   const navigate = useNavigate();
   return (
-    <div className=" section_padding flex bg-gradient-to-r from-[#4923B4] to-[#E878CF] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] rounded-br-[150px] l:flex-col ">
+    <div className=" section_padding flex bg-herogradient shadow-[0px_4px_4px_rgba(0,0,0,0.25)] rounded-br-[150px] l:flex-col ">
       <div className="flex-1 flex justify-center items-start flex-col mr-[5rem] l:mb-[3rem] l:mr-0">
         <h1 className="font-manrope font-extrabold text-[62px] leading-[75px] text-foreground tracking-[-0.04em] m:text-[48px] m:leading-[60px] vs:text-[36px] vs:leading-[48px]">
-          Let's Build Something amazing with all your support
+        Find the right freelance service, right away 
         </h1>
         <p className="not-italic font-normal text-xl  text-foreground mt-6 vs:text-sm m:text-base ">
-          Yet bed any for travelling assistance indulgence unpleasing. Not
-          thoughts all exercise blessing. Indulgence way every joy alteration
-          boisterous the attachment. Party we years to order allow asked of.
+        Forget the old rules. You can have the best people.
+        Right now. Right here.
         </p>
         <div className="flex mt-8 mb-4">
           <button onClick={() => navigate("/auth")} className="btn-4 m:text-base ss:text-sm" type="button">

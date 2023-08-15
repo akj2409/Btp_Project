@@ -8,8 +8,9 @@ const Footer = () => {
    
     <div className='flex justify-between items-start flex-wrap flex-row w-full text-left'>
       <div className='flex flex-col justify-start items-start w-[250px] m-4 s:my-4 s:mx-0'>
-        <h3 className='font-manrope font-bold text-[25px]/[34px] text-foreground mb-4'>Edu-freelancer</h3>
-        <p className='font-manrope text-xs text-foreground mb-8'>Lorem ipsum dolor sit amet consectetur. Magna integer enim vitae vulputate eu vitae tristique.</p>
+        <h3 className='font-manrope font-bold text-[25px]/[34px] text-foreground mb-4'>Aviate-freelance</h3>
+        <p className='font-manrope text-xs text-foreground mb-8'>Find the right freelance service, right away.  Forget the old rules. You can have the best people.
+        Right now. Right here. </p>
       </div>
       <div className='flex flex-row justify-start items-start flex-wrap gap-12 m-4 s:gap-0 s:my-4 s:mx-0'>
       <div className=' w-56 s:my-4 s:mx-0'>
@@ -40,7 +41,7 @@ const Footer = () => {
       </div>
     </div>
     <div className='mt-8 text-center w-full s:my-4 s:mx-0'>
-    <p className='font-manrope text-xs text-foreground'>© 2023-@Edu-freelance. All rights reserved.</p>
+    <p className='font-manrope text-xs text-foreground'>© 2023-@Aviate-freelance. All rights reserved.</p>
     </div>
     
   </div>

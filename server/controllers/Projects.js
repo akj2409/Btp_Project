@@ -51,7 +51,7 @@ export const deleteProject = async(req,res)=>{
   try {
     const id = req.params['id'];
     await Projects.deleteOne({_id:id});
-    return res.status(200).json({sucess:true , message:"Project Deleted " })
+    return res.status(200).json({sucess:true , message:"Project Deleted Successfully" })
   } catch (error) {
     res
     .status(500)

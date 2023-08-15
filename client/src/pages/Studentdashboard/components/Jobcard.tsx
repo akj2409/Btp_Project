@@ -1,11 +1,18 @@
 import React,{useState} from 'react'
 import {IoIosArrowUp,IoIosArrowDown} from 'react-icons/io';
 import { FaRupeeSign } from "react-icons/fa";
+import {BsPatchCheck} from "react-icons/bs";
+import {TbAlertCircle} from "react-icons/tb";
+import useModal from "../../../hooks/useModal";
+
+
 const applyurl = 'http://localhost:5000/jobs/apply';
 const revokejoburl = 'http://localhost:5000/jobs/revoke/'
 
-const Jobcard = ({id,title,skillset,amount,description , property , func}:any) => {
+const Jobcard = ({id,title,skillset,amount,description,category, property , func}:any) => {
     const token = localStorage.getItem('token');
+  
+    
     const applyforjob= async()=>{
       const object = {
         "job_id":id
@@ -19,7 +26,10 @@ const Jobcard = ({id,title,skillset,amount,description , property , func}:any) =
       body:JSON.stringify(object)
       }).then(async(res)=>{
         const data = await res.json();
-        alert(data.message);
+      
+        
+        modal.show(<JobcardModal msg={data.message}/>);
+        
         if(data.sucess){
           func();
         }
@@ -27,6 +37,10 @@ const Jobcard = ({id,title,skillset,amount,description , property , func}:any) =
         console.log(err);
       })
     }
+    
+    const modal = useModal()
+
+    
 
     const revokejob = async()=>{
       await fetch(revokejoburl+id ,{
@@ -37,7 +51,8 @@ const Jobcard = ({id,title,skillset,amount,description , property , func}:any) =
       }
       }).then(async(res)=>{
         const data = await res.json();
-        alert(data.message);
+
+        
         if(data.sucess){
           func(true);
         }
@@ -47,11 +62,12 @@ const Jobcard = ({id,title,skillset,amount,description , property , func}:any) =
     }
     const [toggledetail,settoggledetail] = useState(false);
   return (
-    <div  className=' flex w-1/2 justify-start gap-4 flex-col m-4 p-4 rounded-[10px] border border-gray bg-foreground  hover:shadow-[0px_7px_30px_0px_rgba(90,114,123,0.11)]  l:w-4/5 xm:w-4/5 '>
+    <div  className='flex w-1/2 justify-start gap-4 flex-col m-4 p-4 rounded-[10px] border border-gray bg-foreground duration-300 hover:-translate-y-1 hover:shadow-[0px_7px_30px_0px_rgba(90,114,123,0.11)]  l:w-4/5 xm:w-4/5 '>
     <div className='flex flex-row justify-between gap-4 xm:flex-col '>
     <div className='flex flex-col justify-center items-start gap-2'>
         <h1 className='font-manrope text-black font-bold'>{title}</h1>
         <p className=" flex items-center font-manrope text-grey text-xs">Budget:<FaRupeeSign size={10}/>{amount}</p>
+        <p className=" flex items-center font-manrope text-grey text-xs">Category:{category}</p>
         <div className="flex flex-row flex-wrap justify-start items-start gap-2">
           {skillset.map((skill: any,i: any)=>(
             <div key={i} className="bg-[#cec1f3] flex justify-center items-center rounded-xl px-2.5 py-1">
@@ -74,7 +90,7 @@ const Jobcard = ({id,title,skillset,amount,description , property , func}:any) =
     </div>
     </div>    
     {toggledetail && (
-      <div>
+      <div className={`transition duration-500 `}>
          <div className=' flex flex-col justify-center gap-1 items-start'>
             <h1 className='font-manrope font-bold text-black text-base'>Description</h1>
             <p className='font-manrope text-grey text-sm'>{description}</p>
@@ -83,7 +99,23 @@ const Jobcard = ({id,title,skillset,amount,description , property , func}:any) =
 
     )}  
  </div>
+ 
   )
+};
+function JobcardModal({msg}:any) {
+
+  const modal = useModal()
+
+  return <div className='w-100px shadow-lg'>
+  <div className='bg-white shadow-lg flex flex-col justify-center items-center gap-8 p-4 rounded-lg'>
+   <div className="flex justify-center items-center flex-col gap-1">
+     {msg === "Already Rregistered For This Job" ? (<TbAlertCircle size={'50px'} color="#f41818"/>)
+    : (<BsPatchCheck size={'50px'} color="#4adf52"/>)}
+   <p className='mt-2 font-manrope text-black font-bold'>{msg}</p> 
+   </div>
+    <button className='btn-3 ' onClick={()=>modal.hide()}>OK</button> 
+  </div>
+</div>
 }
 
 export default Jobcard
