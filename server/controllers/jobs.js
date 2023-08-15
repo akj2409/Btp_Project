@@ -19,7 +19,7 @@ export const Apply_job = async(req,res)=>{
         const {job_id} = req.body ;
 
         const job = await Jobs.findById({_id:job_id});
-        // console.log(job);
+        console.log(job);
         const applied = job.applied_user ;
 
         if(applied.includes(_id)){

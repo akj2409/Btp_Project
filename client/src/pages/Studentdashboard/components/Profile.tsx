@@ -45,25 +45,15 @@ const projectards: {
 }[] = [];
 
 const Profile = () => {
-  const inputRef = useRef() as React.MutableRefObject<HTMLImageElement>;
-  const [image, setimage] = useState("");
+  // const inputRef = useRef() as React.MutableRefObject<HTMLImageElement>;
+  
 
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   if (!token) {
     navigate("/");
   }
-  const handleimageclick = () => {
-    inputRef.current.click();
-  };
-
-  const handleimagechange = (e: { target: { files: any[] } }) => {
-    const file = e.target.files[0];
-    setimage(file);
-    console.log(image);
-    console.log(typeof image);
-  };
-
+    
   const [name, setname] = useState("aditya");
   const [email, setemail] = useState("aditya@jhfguoid");
   const [mobile, setmobile] = useState("");
@@ -71,8 +61,28 @@ const Profile = () => {
   const [bio, setbio] = useState("");
   const [gitlink, setgitlink] = useState("");
   const [linkedinlink, setlinkedinlink] = useState("");
+  const [image, setimage] = useState("");
+  const [imageprev, setimageprev] : any = useState("");
   const [projectdata, setprojectdata] = useState([]);
   const [deletemsg, setdeletemsg] = useState("");
+
+  const handleimagechange = (e: any) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () =>{
+      setimageprev(reader.result);
+      setimage(file);
+    }
+    // const base64 = await converttobase64(file);
+    console.log(imageprev);
+    console.log(image);
+    // console.log("Image: ", file);
+  };
+  // console.log(imageprev);
+  //   console.log(image);
+
+  
   const handlemobile = (e: any) => {
     setmobile(e.target.value);
   };
@@ -102,20 +112,21 @@ const Profile = () => {
       modal.show(<DeleteProfileModal deletemsg={"Enter Correct Mobile Number ..."} />);
       return;
     }
-    const object = {
-      mobile: mobile,
-      address: address,
-      github: gitlink,
-      linkedin: linkedinlink,
-      bio: bio,
-    };
+
+    const formData = new FormData();
+    formData.append("mobile", mobile);
+    formData.append("address", address);
+    formData.append("github", gitlink);
+    formData.append("linkedin", linkedinlink);
+    formData.append("bio", bio);
+    formData.append("file", image);
+
     await fetch(saveurl, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         token: `${token}`,
       },
-      body: JSON.stringify(object),
+      body: formData
     })
       .then(async (res) => {
         const data = await res.json();
@@ -164,6 +175,7 @@ const Profile = () => {
         setbio(data.details[0].bio);
         setgitlink(data.details[0].githubLink);
         setlinkedinlink(data.details[0].linkedinLink);
+        setimageprev(data.details[0].profile.url)
       })
       .catch((err) => {
         console.log(err);
@@ -243,23 +255,28 @@ const Profile = () => {
           <div className="flex-1 flex flex-col justify-center items-center w-full p-4 my-4 mr-4 ml-16 ml:m-4">
             <div className="flex flex-col justify-center items-center p-5 w-full bg-foreground rounded-xl shadow-[0px_1px_20px_rgba(14,30,37,0.12)]">
               <div className="flex flex-col justify-center items-center">
-                <div
+                <div 
                   className="flex justify-center p-[3px] bg-herogradient rounded-full items-center h-[108px] w-[108px]"
-                  onClick={handleimageclick}
+                  // onClick={handleimageclick}
                 >
-                  {image ? (
+                  <label htmlFor="file-upload">
+                  
+                  {imageprev ? (
+                     <img
+                     className="w-full h-full border-4 border-foreground rounded-full"
+                     src={imageprev}
+                     alt="logo"
+                   />
+                  ):(
                     <img
-                      className="w-full h-full border-4 border-foreground rounded-full"
-                      src={URL.createObjectURL(image as any)}
-                      alt="logo"
-                    />
-                  ) : (
-                    <img
-                      className="w-full h-full border-4 border-foreground rounded-full"
-                      src={"/images/user.png"}
-                      alt="logo"
-                    />
+                    className="w-full h-full border-4 border-foreground rounded-full"
+                    src="/images/user.png"
+                    alt="logo"
+                  />
                   )}
+                   
+                  
+                  </label>
                 </div>
                 <h3 className="font-manrope text-xl my-2.5 mx-0 font-bold">
                   {name}
@@ -351,10 +368,10 @@ const Profile = () => {
                   />
                 </div>
                 <div className="hidden">
-                  {" "}
                   <input
                     type="file"
-                    ref={inputRef}
+                    name="myFile"
+                    id="file-upload"  
                     onChange={handleimagechange}
                   />
                 </div>
@@ -416,5 +433,18 @@ function DeleteProfileModal({ deletemsg }: any) {
     </div>
   );
 }
+
+// function converttobase64(file: any){
+//   return new Promise((resolve, reject)=>{
+//     const fileReader = new FileReader();
+//     fileReader.readAsDataURL(file);
+//     fileReader.onload = () =>{
+//       resolve(fileReader.result)
+//     };
+//     fileReader.onerror = (error) =>{
+//       reject(error)
+//     }
+//   })
+// }
 
 export default Profile;

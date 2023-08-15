@@ -18,6 +18,10 @@ const DetailsSchema= new mongoose.Schema(
           bio:{
             type:String
           },
+          profile:{
+            public_id:String,
+            url:String,
+          },
           user_id:{
             type:String,
           }

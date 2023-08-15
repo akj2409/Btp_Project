@@ -142,8 +142,9 @@ const Auth = () => {
     <Navbar/>
     <div className=" bg-foreground flex flex-col gap-10 m-auto rounded-lg mt-16 p-5 w-[30%] h-[80%]  mb-8 shadow-[0px_1px_20px_rgba(14,30,37,0.12)] s:w-4/5 s:p-2.5 sm:w-6/12">
       <div className="flex flex-col justify-center items-center text-xl font-manrope font-semibold">
-        <img className="w-[62px] h-[62px]" src="/images/lock.png" alt="lock" />
-        <h3>{isSignup ? "Sign Up" : "Sign In"}</h3>
+        <img className="w-[62px] h-[62px]" src="/images/archcoin (1).png" alt="lock" />
+        {/* <h3>{isSignup ? "Sign Up" : "Sign In"}</h3> */}
+        <h3>Aviate-freelance</h3>
       </div>
       <form className="flex flex-col gap-5 justify-evenly z-1" onSubmit={handleSubmit}>
         <div className="flex flex-row justify-between z-0">

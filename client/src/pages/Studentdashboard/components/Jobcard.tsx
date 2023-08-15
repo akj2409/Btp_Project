@@ -9,14 +9,14 @@ import useModal from "../../../hooks/useModal";
 const applyurl = 'http://localhost:5000/jobs/apply';
 const revokejoburl = 'http://localhost:5000/jobs/revoke/'
 
-const Jobcard = ({id,title,skillset,amount,description,category, property , func}:any) => {
+const Jobcard = ({_id,title,skills,amount,description,category, property }:any) => {
     const token = localStorage.getItem('token');
   
-    
     const applyforjob= async()=>{
       const object = {
-        "job_id":id
+        "job_id":_id
       }
+      console.log(object);
       await fetch(applyurl ,{
         method:'POST',
       headers:{
@@ -26,12 +26,12 @@ const Jobcard = ({id,title,skillset,amount,description,category, property , func
       body:JSON.stringify(object)
       }).then(async(res)=>{
         const data = await res.json();
-      
+      console.log(data);
         
         modal.show(<JobcardModal msg={data.message}/>);
         
         if(data.sucess){
-          func();
+        
         }
       }).catch(err=>{
         console.log(err);
@@ -43,7 +43,7 @@ const Jobcard = ({id,title,skillset,amount,description,category, property , func
     
 
     const revokejob = async()=>{
-      await fetch(revokejoburl+id ,{
+      await fetch(revokejoburl+_id ,{
         method:'GET',
       headers:{
         "Content-Type":"application/json",
@@ -54,7 +54,7 @@ const Jobcard = ({id,title,skillset,amount,description,category, property , func
 
         
         if(data.sucess){
-          func(true);
+    
         }
       }).catch(err=>{
         console.log(err);
@@ -69,11 +69,11 @@ const Jobcard = ({id,title,skillset,amount,description,category, property , func
         <p className=" flex items-center font-manrope text-grey text-xs">Budget:<FaRupeeSign size={10}/>{amount}</p>
         <p className=" flex items-center font-manrope text-grey text-xs">Category:{category}</p>
         <div className="flex flex-row flex-wrap justify-start items-start gap-2">
-          {skillset.map((skill: any,i: any)=>(
-            <div key={i} className="bg-[#cec1f3] flex justify-center items-center rounded-xl px-2.5 py-1">
-             <p className="font-manrope text-black text-xs">{skill}</p>
-            </div>
-          ))}
+            {skills.map((skill: any,i: any)=>(
+              <div key={i} className="bg-[#cec1f3] flex justify-center items-center rounded-xl px-2.5 py-1">
+              <p className="font-manrope text-black text-xs">{skill}</p>
+              </div>
+            ))}
         </div>
     </div>
     <div className='flex justify-start gap-2 items-center'>

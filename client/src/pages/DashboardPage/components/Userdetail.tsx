@@ -37,30 +37,18 @@ const getprojectsbyidurl = 'http://localhost:5000/project/all_projects/'
 const Userdetail = () => {
 
   const id = localStorage.getItem('user_id');
-  const inputRef = useRef() as React.MutableRefObject<HTMLImageElement>;
+
   const [image, setimage] = useState("");
-  
-  // const handleimageclick = () => {
-  //   inputRef.current.click();
-  // };
-
-  // const handleimagechange = (e: { target: { files: any[] } }) => {
-  //   const file = e.target.files[0];
-  //   setimage(file);
-  //   console.log(image);
-  //   console.log(typeof(image));
-  // };
-   
-
   const [name,setname] = useState("");
   const [email,setemail] = useState("");
   const [mobile,setmobile] = useState("");
   const [address,setaddress] = useState("");
   const [bio,setbio] = useState("");
+ 
   const [gitlink,setgitlink] = useState("");
   const [linkedinlink,setlinkedinlink] = useState("");
   const [projectdata,setprojectdata] = useState([]);
-  localStorage.setItem('reload','1');
+  // localStorage.setItem('reload','1');
 
   
 
@@ -97,6 +85,7 @@ const Userdetail = () => {
       setbio(data.details[0].bio);
       setgitlink(data.details[0].githubLink);
       setlinkedinlink(data.details[0].linkedinLink);
+      setimage(data.details[0].profile.url);
       }
       
     }).catch(err=>{
@@ -145,7 +134,8 @@ const Userdetail = () => {
   return (
     <>
       <Dashbar/>
-      <div className=" section_padding bg-background flex justify-center">
+      <div className="h-screen bg-background">
+      <div className=" section_padding  bg-background flex justify-center">
         <div className="flex flex-row justify-center items-start w-full ml:flex-col ml:justify-center ml:items-center">
           <div className="flex-1 flex flex-col justify-center items-center w-full p-4 my-4 mr-4 ml-16 ml:m-4">
             <div className="flex flex-col justify-center items-center p-5 w-full bg-foreground rounded-xl shadow-[0px_1px_20px_rgba(14,30,37,0.12)]">
@@ -157,7 +147,7 @@ const Userdetail = () => {
                   {image ? (
                     <img
                       className="w-full h-full border-4 border-foreground rounded-full"
-                      src={URL.createObjectURL(image as any)}
+                      src={image}
                       alt="logo"
                     />
                   ) : (
@@ -280,6 +270,7 @@ const Userdetail = () => {
               </div>
           </div>
         </div>
+      </div>
       </div>
     </>
   );

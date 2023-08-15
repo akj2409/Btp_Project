@@ -5,8 +5,17 @@ import jobRouter from './routes/jobs.js'
 import projectRouter from "./routes/projects.js";
 import detailsRouter from "./routes/details.js"
 import cors from 'cors';
+import cloudinary from 'cloudinary';
+import { Send_Email } from './controllers/mailer.js';
 
  connectDb();
+
+ cloudinary.v2.config({
+    cloud_name:"dqf02vih2",
+    api_key: "685317331147465",
+    api_secret: "9iwvJnwwLtr094ZhKrDZAhEjkxk",
+ });
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -22,6 +31,8 @@ app.use('/users',userRouter);
 app.use('/jobs',jobRouter);
 app.use("/project", projectRouter);
 
+app.get('/email', Send_Email)
+
 app.use('/saveDetails' , detailsRouter);
 
 
@@ -31,8 +42,6 @@ app.use('/' , (req,res)=>{
 app.listen(PORT , ()=>{
     console.log(`server Is running on ${PORT}`);
 })
-
-
 
 
 // login Api

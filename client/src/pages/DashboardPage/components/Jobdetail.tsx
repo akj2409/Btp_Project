@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Dashbar from "./Dashbar";
+import Emailform from "./Emailform";
 import { FaRupeeSign } from "react-icons/fa";
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import useModal from "../../../hooks/useModal";
 import {
+  TextField,
   Table,
   TableBody,
   TableCell,
@@ -21,10 +24,19 @@ function createData(
   bio: string,
   email: string,
   mobile_no: string,
+  image:string,
   id:string
 ) {
-  return { rank, firstname, lastname, bio, email, mobile_no ,id};
+  return { rank, firstname, lastname, bio, email, mobile_no ,image,id};
 }
+
+// interface User{rank: number,
+//   firstname: string,
+//   lastname: string,
+//   bio: string,
+//   email: string,
+//   mobile_no: string,
+//   id:string};
 
 
 const rows :{rank: number,
@@ -33,7 +45,9 @@ const rows :{rank: number,
   bio: string,
   email: string,
   mobile_no: string,
+  image:string,
   id:string}[] = [];
+
 const fetchjoburl = 'http://localhost:5000/jobs/jobsbyid/'
 const fetchuserbyidurl = 'http://localhost:5000/users/user_by_id/'
 const fetchdetailsurl = 'http://localhost:5000/saveDetails/getDetailsbyid/'
@@ -42,7 +56,8 @@ const fetchdetailsurl = 'http://localhost:5000/saveDetails/getDetailsbyid/'
 const applied_users: {rank: number, firstname: string,lastname: string,bio: string,email: string,mobile_no:string , id:string}[] = [] ;
 
 const Jobdetail = () => {
-  
+  const [finalRows, setFinalRows]: any = useState([]);
+  const modal = useModal();
   const [jobdetaildata,setjobdetaildata] = useState({title:'' , id:'' , applied_user:'' , description:'', skills:'' , budget:'', category:''});
   const [userstate , setuserstate] = useState({})
   const locatio=useLocation();
@@ -52,7 +67,7 @@ const Jobdetail = () => {
   const id = localStorage.getItem('id');
   // console.log(id);
  
-  console.log(localStorage.getItem('reload'));
+  // console.log(localStorage.getItem('reload'));
 let applied_users_id ;
   const fetchjob = async()=>{
     await fetch(fetchjoburl+id , {
@@ -69,7 +84,11 @@ let applied_users_id ;
       size = applied_users_id.length ;
        applied_users_id.forEach((id1: string) => {
         console.log("hlo this is check");
-        if(id1.length && applied_users.length < size) getapplieduser(id1);
+        if(id1.length && applied_users.length < size) {
+          getapplieduser(id1);
+         
+        }
+        
       })
     }).catch(err=>{
       console.log(err);
@@ -79,12 +98,13 @@ let applied_users_id ;
 
   const getapplieduser = async(id:string)=>{
 
-     const object: {firstname: string,lastname: string,bio: string,email: string,mobile_no:string , _id:string} = {
+     const object: {firstname: string,lastname: string,bio: string,email: string,mobile_no:string ,image:string, _id:string} = {
        firstname: "",
        lastname: "",
        bio: "",
        email: "",
        mobile_no: "",
+       image: "",
        _id: id
      };
       await fetch(fetchuserbyidurl+id, {
@@ -109,38 +129,41 @@ let applied_users_id ;
           if(data1.details.length===1){
             object.mobile_no =  data1.details[0].mobile_no;
             object.bio =  data1.details[0].bio ;
+            object.image = data1.details[0].profile.url;
           }
 
           if(size-1 > rows.length ){
-            rows.push(createData(rows.length+1 , object.firstname, object.lastname ,object.bio ,object.email , object.mobile_no , object._id))
+            rows.push(createData(rows.length+1 , object.firstname, object.lastname ,object.bio ,object.email , object.mobile_no, object.image , object._id))
+            console.log("fetch data");
             // console.log(rows);
-            let myobj={
-              firstname: "",
-              lastname: "",
-              bio: "",
-              email: "",
-              mobile_no: "",
-              _id: id
-            }
-            myobj.firstname=object.firstname;
-            myobj.lastname=object.lastname;
-            myobj.bio=object.bio;
-            myobj.email=object.email;
-            myobj.mobile_no=object.mobile_no;
-            myobj._id=object._id;
-            console.log(myobj);
-            let newer=array;
-            let mymap=new Map()
-            let newest=[]
-            newer.push(myobj);
-            for(let i=0;i<newer.length;i++){
-              if(mymap.has(newer[i]._id)){
+            // let myobj={
+            //   firstname: "",
+            //   lastname: "",
+            //   bio: "",
+            //   email: "",
+            //   mobile_no: "",
+            //   _id: id
+            // }
+            // myobj.firstname=object.firstname;
+            // myobj.lastname=object.lastname;
+            // myobj.bio=object.bio;
+            // myobj.email=object.email;
+            // myobj.mobile_no=object.mobile_no;
+            // myobj._id=object._id;
+            // console.log(myobj);
+            // let newer=array;
+            // let mymap=new Map()
+            // let newest=[]
+            // newer.push(myobj);
+            // for(let i=0;i<newer.length;i++){
 
-              }else{
-                mymap.set(newer[i]._id,1);
-                newest.push(newer[i]);
-              }
-            }
+            //   if(mymap.has(newer[i]._id)){
+
+            //   }else{
+            //     mymap.set(newer[i]._id,1);
+            //     newest.push(newer[i]);
+            //   }
+            // }
 
 
 
@@ -148,14 +171,16 @@ let applied_users_id ;
             
 
 
-            setArray(newest);
-            console.log(array);
-            navigate('/jobdetail')
+            // setArray(newest);
+            // console.log(array);
+            // navigate('/jobdetail');
+            
+           
 
           }
-
+          setFinalRows(rows);
           setuserstate(applied_users);
-          // console.log(rows) 
+          // console.log("Final Rows: ", finalRows); 
                    
         })
       }).catch(err=>{
@@ -163,33 +188,33 @@ let applied_users_id ;
       })
   }
 
-  const [a,seta]=useState(0);
-  console.log(location.href);
+  // const [a,seta]=useState(0);
+  // console.log(location.href);
   
   useEffect(()=>{
-    console.log('hiiii');
+    
     fetchjob();
-  },[]);
-  useEffect(()=>{
-    console.log('heyeyyrydbcj')
-    console.log(localStorage.getItem('reload'));
-    console.log(localStorage.getItem('reload')=='1')
-    if(localStorage.getItem('reload')=='1'){
-      location.reload();
-      console.log('hiiiisdfghgfdsdfggfdsdfghgfdsdfg')
-      localStorage.setItem('reload','0');
-    }
-  });
- 
+    
+  },[finalRows]);
 
   
+  // useEffect(()=>{
+  //   console.log('heyeyyrydbcj')
+  //   console.log(localStorage.getItem('reload'));
+  //   console.log(localStorage.getItem('reload')=='1')
+  //   if(localStorage.getItem('reload')=='1'){
+  //     location.reload();
+  //     console.log('hiiiisdfghgfdsdfggfdsdfghgfdsdfg')
+  //     localStorage.setItem('reload','0');
+  //   }
+  // });
+ 
 
   const func=(id:any)=>{
     localStorage.setItem('user_id',id);
-    localStorage.setItem('reload','1');
+    // localStorage.setItem('reload','1');
     navigate(`/userdetail`)
   }
- console.log("length is ",rows.length);
   return (
     <>
       <Dashbar />
@@ -246,6 +271,12 @@ let applied_users_id ;
             </div>
           </div>
         </div>
+        <div className="flex flex-row-reverse justify-between right-0 mt-4 ">
+      
+          <button onClick={()=>{modal.show(<EmailModal/>)}} className="btn-3" type="button">
+            Send Email
+          </button>
+        </div>
       </div>
       <div className="px-24 py-10 w-fll bg-background flex flex-col justify-center m:px-16 s:px-8">
         <h1 className="font-manrope text-black font-extrabold p-4 text-2xl">
@@ -253,7 +284,7 @@ let applied_users_id ;
           Best Matches
         </h1>
 
-        {rows.length ?<div className="bg-foreground flex flex-col gap-4 m-auto rounded-lg  p-5 w-full  shadow-[0px_1px_20px_rgba(14,30,37,0.12)]">
+        {finalRows?.length ?<div className="bg-foreground flex flex-col gap-4 m-auto rounded-lg  p-5 w-full  shadow-[0px_1px_20px_rgba(14,30,37,0.12)]">
           <TableContainer>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -281,11 +312,12 @@ let applied_users_id ;
               </TableHead>
               <TableBody>
                 
-                {array.map((user,i) => (
+                {finalRows?.map((user: any,i: any)  => (
                   <TableRow 
-                    onClick={()=>func(user._id)}
+                    onClick={()=>func(user.id)}
                     key={i}
                   >
+                    
                     <TableCell>
                       <h1 className="font-manrope text-grey">{i+1}</h1>
                     </TableCell>
@@ -295,7 +327,7 @@ let applied_users_id ;
                           <Avatar
                             sx={{ backgroundColor: "#4923B4" }}
                             alt={user.firstname}
-                            src="."
+                            src={user.image}
                           />
                         </div>
                         <div className="flex flex-col gap-1">
@@ -329,3 +361,11 @@ let applied_users_id ;
 };
 
 export default Jobdetail;
+
+
+function EmailModal() {
+
+  return (
+   <Emailform />
+  );
+}

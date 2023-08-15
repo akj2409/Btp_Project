@@ -26,9 +26,9 @@ export default function App() {
     createRoutesFromElements(
       <Route path="/" element={<Root />}>
         <Route index element={<HomePage />} />
-        <Route path="/contact" element={<Contact/>}/>
-        <Route path="/about" element={<About/>}/>
-        <Route path="/help" element={<Help/>}/>
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/help" element={<Help />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/userdetail" element={<Userdetail />} />
         <Route path="/auth" element={<Auth />} />
@@ -55,16 +55,22 @@ function Root() {
 
   return (
     <main className="relative">
-      <div className={`fixed z-[999] top-0 left-0 w-full h-full flex justify-center items-center bg-black backdrop-blur-sm pointer-events-none 
-      bg-opacity-20 opacity-0 duration-500 ${modal.element && "pointer-events-auto opacity-100"}`}>
-        <div className={`duration-500 ${!modal.element && "translate-y-[100vh] scale-50"}` }>
+      <div
+        className={`fixed z-[999] top-0 left-0 w-full h-full flex justify-center items-center bg-black backdrop-blur-sm pointer-events-none 
+      bg-opacity-20 opacity-0 duration-500 ${
+        modal.element && "pointer-events-auto opacity-100"
+      }`}
+      >
+        <div
+          className={`duration-500 ${
+            !modal.element && "translate-y-[100vh] scale-50"
+          }`}
+        >
           {modal.element}
-          </div>
+        </div>
       </div>
 
-      
       <Outlet />
-    
     </main>
   );
 }

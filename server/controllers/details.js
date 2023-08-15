@@ -1,10 +1,20 @@
 import { link } from "fs";
 import { UserDetail } from "../models/UserDetails.js";
+import getDataUri from "../util/dataUrl.js";
+import cloudinary from "cloudinary";
 
 export const save_Details = async(req,res)=>{
     try {
         const {_id} = req.user_name ;
-        const { mobile , address , github , linkedin , bio} = req.body ;
+        const { mobile , address , github , linkedin , bio, profile} = req.body ;
+
+        const file = req.file;
+
+        console.log("File: ", file);
+
+        const fileUri = getDataUri(file);
+
+        const mycloud = await cloudinary.v2.uploader.upload(fileUri.content);
 
         const details = await UserDetail.findOne({user_id:_id});
         if(details){
@@ -13,19 +23,31 @@ export const save_Details = async(req,res)=>{
                 address,
                 "githubLink":github,
                 "linkedinLink":linkedin,
-                bio
+                bio,
+                "profile":{
+                    public_id:mycloud.public_id,
+                    url:mycloud.secure_url,
+                }
             }
            await details.updateOne(object)
 
            return res.status(200).json({sucess:true,message:"Details Updated Successfully"});
         }
+
+      
+
         await UserDetail.create({
             mobile_no:mobile,
             address,
             githubLink:github,
             linkedinLink:linkedin,
             bio,
-            user_id:_id
+            user_id:_id,
+            // add attribute here
+            profile:{
+                public_id:mycloud.public_id,
+                url:mycloud.secure_url,
+            }
         })
 
         res.status(200).json({sucess:true, message:"Details Saved Successfully"});

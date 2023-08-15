@@ -5,18 +5,15 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const [togglemenu, settogglemenu] = useState(false);
   const navigate = useNavigate();
-  const homeandclose = () => {
-    navigate("/");
-    settogglemenu(false);
-  };
-  const aboutandclose = () => {
-    navigate("/about");
-    settogglemenu(false);
-  };
+
+  
 
   return (
     <div className="flex justify-between items-center sticky w-full px-[6rem] py-[.1rem] bg-foreground z-[100] shadow-xl s:p-8 l:px-16 l:py-4">
       <div className=" flex-1 flex justify-start items-center ">
+        <div className="w-10 h-10">
+          <img className=" w-full h-full" src="/images/archcoin (1).png" alt="logo" />
+        </div>
         <div className="mr-16 cursor-pointer">
           <h3 className="font-manrope text-black font-extrabold text-2xl s:text-xl">Aviate-freelance</h3>
         </div>

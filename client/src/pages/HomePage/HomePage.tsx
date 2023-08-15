@@ -7,15 +7,15 @@ import Navbar from "../../common/Navbar";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 const HomePage = () => {
-  const navigate=useNavigate();
-  const location=useLocation();
-  useEffect(()=>{
-    console.log('hiii');
+  // const navigate=useNavigate();
+  // const location=useLocation();
+  // useEffect(()=>{
+  //   console.log('hiii');
 
-    if(localStorage.getItem('token')!=null){
-      navigate('/dashboard');
-    }
-  },[location]);
+  //   if(localStorage.getItem('token')!=null){
+  //     navigate('/dashboard');
+  //   }
+  // },[location]);
   return (
     <>
       <Navbar/>
